@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 7-1: Metaphor & Affordance Deconstruction — Spotify</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --card: #181818;
+      --accent: #1db954;
+      --accent2: #1ed760;
+      --text: #e0e0e0;
+      --muted: #999;
+      --border: #282828;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, #1db95422 0%, #0f0f0f 60%);
+    }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: .6rem; }
+    .hero h1 span { color: var(--accent); }
+    .hero .subtitle { font-size: 1.2rem; color: var(--muted); max-width: 640px; }
+    .hero .meta {
+      margin-top: 2rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .hero .meta a { color: var(--accent); text-decoration: none; }
+    .hero .meta a:hover { text-decoration: underline; }
+
+    /* ---- Container ---- */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ---- Section ---- */
+    section { margin-top: 4rem; }
+    section > h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 1rem;
+    }
+    section > p, section > ul { margin-bottom: 1rem; }
+    ul { padding-left: 1.4rem; }
+    li { margin-bottom: .5rem; }
+
+    /* ---- Analysis Card ---- */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.4rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .card-body { padding: 1.6rem 2rem; }
+    .card-body h3 { font-size: 1.3rem; margin-bottom: .8rem; color: #fff; }
+    .card-body .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-bottom: 8px;
+    }
+    .tag-metaphor { background: #1db95433; color: var(--accent2); }
+    .tag-affordance { background: #3b82f633; color: #60a5fa; }
+    .tag-critique { background: #f59e0b33; color: #fbbf24; }
+
+    /* ---- Annotated Screenshot ---- */
+    .screenshot-wrapper {
+      position: relative;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .screenshot-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+    /* SVG-based mockup */
+    .mockup {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #111;
+    }
+
+    /* ---- Annotation Layer ---- */
+    .annotation-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .annotation {
+      background: #1a1a1a;
+      border-left: 3px solid var(--accent);
+      padding: .8rem 1rem;
+      border-radius: 0 8px 8px 0;
+      font-size: .9rem;
+    }
+    .annotation strong { color: #fff; display: block; margin-bottom: .2rem; }
+
+    /* ---- Comparison Table ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      text-align: left;
+      padding: .8rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    th { color: var(--accent); font-weight: 600; font-size: .9rem; text-transform: uppercase; letter-spacing: .04em; }
+    td { color: var(--text); }
+    tr:hover td { background: #1a1a1a; }
+
+    /* ---- Footer ---- */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--muted);
+      font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 1.8rem; }
+      .annotation-container { grid-template-columns: 1fr; }
+      .container { padding: 0 1rem 4rem; }
+    }
+
+    /* ---- Mockup Styles ---- */
+    .spotify-mockup {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .mockup-inner {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 480px;
+      background: #121212;
+      font-size: .85rem;
+    }
+    .mockup-sidebar {
+      background: #000;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .mockup-sidebar .logo { color: #fff; font-weight: 800; font-size: 1.1rem; margin-bottom: .6rem; }
+    .mockup-sidebar .nav-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: #b3b3b3;
+      padding: .4rem 0;
+      cursor: default;
+    }
+    .mockup-sidebar .nav-item.active { color: #fff; }
+    .mockup-sidebar .nav-icon { width: 20px; text-align: center; }
+    .mockup-sidebar .library-label {
+      color: #b3b3b3;
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: .8rem;
+      margin-bottom: .2rem;
+    }
+    .mockup-sidebar .playlist {
+      color: #b3b3b3;
+      padding: .25rem 0;
+      font-size: .8rem;
+      cursor: default;
+    }
+    .mockup-sidebar .playlist:hover { color: #fff; }
+    .mockup-main {
+      padding: 1.6rem 2rem;
+      background: linear-gradient(180deg, #1a3a2a 0%, #121212 30%);
+    }
+    .mockup-main h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
+    .mockup-main .sub { color: #b3b3b3; font-size: .8rem; margin-bottom: 1.2rem; }
+    .play-btn {
+      width: 44px; height: 44px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+      cursor: default;
+    }
+    .play-btn::after { content: "▶"; color: #000; font-size: 1rem; margin-left: 2px; }
+    .track-list { list-style: none; padding: 0; }
+    .track-list li {
+      display: grid;
+      grid-template-columns: 24px 1fr 60px;
+      gap: .6rem;
+      padding: .5rem .4rem;
+      border-radius: 4px;
+      color: #b3b3b3;
+      align-items: center;
+    }
+    .track-list li:hover { background: #ffffff11; }
+    .track-list .num { text-align: right; font-size: .8rem; }
+    .track-list .title-col .t-name { color: #fff; }
+    .track-list .title-col .t-artist { font-size: .75rem; }
+    .track-list .dur { font-size: .8rem; text-align: right; }
+
+    /* Playbar */
+    .mockup-playbar {
+      grid-column: 1 / -1;
+      background: #181818;
+      border-top: 1px solid #282828;
+      padding: .6rem 1.2rem;
+      display: grid;
+      grid-template-columns: 200px 1fr 160px;
+      align-items: center;
+      gap: 1rem;
+    }
+    .playbar-left { display: flex; align-items: center; gap: .6rem; }
+    .playbar-thumb { width: 40px; height: 40px; background: #333; border-radius: 4px; }
+    .playbar-info .pb-title { color: #fff; font-size: .8rem; }
+    .playbar-info .pb-artist { color: #b3b3b3; font-size: .7rem; }
+    .playbar-center { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+    .playbar-controls { display: flex; gap: .8rem; color: #b3b3b3; font-size: .9rem; }
+    .playbar-controls span { cursor: default; }
+    .playbar-controls .play-small {
+      width: 28px; height: 28px;
+      background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #000; font-size: .7rem;
+    }
+    .progress-bar { width: 100%; height: 4px; background: #404040; border-radius: 2px; position: relative; }
+    .progress-fill { width: 35%; height: 100%; background: var(--accent); border-radius: 2px; }
+    .playbar-right { display: flex; gap: .6rem; align-items: center; color: #b3b3b3; font-size: .8rem; justify-content: flex-end; }
+    .vol-bar { width: 80px; height: 4px; background: #404040; border-radius: 2px; }
+    .vol-fill { width: 60%; height: 100%; background: #fff; border-radius: 2px; }
+
+    /* annotations highlight overlay */
+    .highlight-ring {
+      position: absolute;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      pointer-events: none;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(29,185,84,.4); }
+      50% { box-shadow: 0 0 0 6px rgba(29,185,84,0); }
+    }
+
+    @media (max-width: 700px) {
+      .mockup-inner { grid-template-columns: 1fr; }
+      .mockup-sidebar { display: none; }
+      .mockup-playbar { grid-template-columns: 1fr; }
+    }
+
+    /* number circle */
+    .num-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      font-size: .75rem;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <h1>Metaphor &amp; Affordance<br>Deconstruction: <span>Spotify</span></h1>
+  <p class="subtitle">
+    An analysis of how Spotify leverages real-world metaphors and UI affordances to create an intuitive music streaming experience.
+  </p>
+  <p class="meta">
+    CMAA5043 — Design Activity Week 7-1 &nbsp;|&nbsp;
+    App URL: <a href="https://open.spotify.com" target="_blank" rel="noopener">open.spotify.com</a>
+  </p>
+</header>
+
+<div class="container">
+
+  <!-- ===== INTRO ===== -->
+  <section>
+    <h2>Why Spotify?</h2>
+    <p>
+      Spotify is one of the most widely used digital music platforms, serving over 600 million users worldwide.
+      Its interface is rich with <strong>metaphors</strong> borrowed from physical music experiences and
+      <strong>affordances</strong> that guide user interaction. This makes it an excellent case study for
+      deconstructing how design concepts translate into digital product decisions.
+    </p>
+  </section>
+
+  <!-- ===== ANNOTATED SCREENSHOT 1: Desktop Overview ===== -->
+  <section>
+    <h2>Annotated Screenshot 1 — Desktop Player</h2>
+    <div class="card">
+      <div class="screenshot-wrapper" style="position:relative;">
+        <div class="spotify-mockup" style="width:100%;">
+          <div class="mockup-inner">
+            <!-- Sidebar -->
+            <div class="mockup-sidebar">
+              <div class="logo">● Spotify</div>
+              <div class="nav-item active"><span class="nav-icon">🏠</span> Home</div>
+              <div class="nav-item"><span class="nav-icon">🔍</span> Search</div>
+              <div class="library-label">Your Library</div>
+              <div class="nav-item"><span class="nav-icon">📚</span> Your Library</div>
+              <div style="margin-top:.4rem;display:flex;gap:.4rem;">
+                <span style="background:#333;padding:2px 10px;border-radius:20px;font-size:.7rem;color:#fff;">Playlists</span>
+                <span style="background:#333;padding:2px 10px;border-radius:20px;font-size:.7rem;color:#fff;">Albums</span>
+              </div>
+              <div class="playlist">Liked Songs ❤️</div>
+              <div class="playlist">Discover Weekly</div>
+              <div class="playlist">Chill Vibes</div>
+              <div class="playlist">Workout Energy</div>
+              <div class="playlist">Late Night Jazz</div>
+            </div>
+            <!-- Main Content -->
+            <div class="mockup-main">
+              <h2>Chill Vibes</h2>
+              <div class="sub">Playlist · 42 songs, 2 hr 18 min</div>
+              <div class="play-btn"></div>
+              <ul class="track-list">
+                <li><span class="num">1</span><div class="title-col"><span class="t-name">Blinding Lights</span><br><span class="t-artist">The Weeknd</span></div><span class="dur">3:20</span></li>
+                <li><span class="num">2</span><div class="title-col"><span class="t-name">Watermelon Sugar</span><br><span class="t-artist">Harry Styles</span></div><span class="dur">2:54</span></li>
+                <li><span class="num">3</span><div class="title-col"><span class="t-name">Levitating</span><br><span class="t-artist">Dua Lipa</span></div><span class="dur">3:23</span></li>
+                <li><span class="num">4</span><div class="title-col"><span class="t-name">Stay</span><br><span class="t-artist">The Kid LAROI, Justin Bieber</span></div><span class="dur">2:21</span></li>
+                <li><span class="num">5</span><div class="title-col"><span class="t-name">Peaches</span><br><span class="t-artist">Justin Bieber</span></div><span class="dur">3:18</span></li>
+              </ul>
+            </div>
+            <!-- Play Bar -->
+            <div class="mockup-playbar">
+              <div class="playbar-left">
+                <div class="playbar-thumb"></div>
+                <div class="playbar-info">
+                  <div class="pb-title">Blinding Lights</div>
+                  <div class="pb-artist">The Weeknd</div>
+                </div>
+              </div>
+              <div class="playbar-center">
+                <div class="playbar-controls">
+                  <span>⏮</span>
+                  <span>⏪</span>
+                  <div class="play-small">▶</div>
+                  <span>⏩</span>
+                  <span>⏭</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill"></div></div>
+              </div>
+              <div class="playbar-right">
+                <span>🔊</span>
+                <div class="vol-bar"><div class="vol-fill"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <h3>Key Design Features — Desktop Player Overview</h3>
+        <div class="annotation-container">
+          <div class="annotation">
+            <strong><span class="num-circle">1</span> Sidebar "Library" Navigation</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            The left sidebar mimics a <em>personal music shelf</em> — a physical metaphor of browsing through your own record collection. "Your Library" evokes ownership and personal curation, just as one would organize CDs or vinyl on a shelf.
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">2</span> Green Play Button</strong>
+            <span class="tag tag-affordance">Affordance</span>
+            The large, circular green play button is a classic <em>perceived affordance</em>. Its shape, color (high contrast against dark background), and familiar ▶ icon all signal "press me to start playback." The circular form references physical play buttons on CD/cassette players.
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">3</span> Track List Layout</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            <span class="tag tag-affordance">Affordance</span>
+            The numbered track list mirrors the back of a physical album cover or CD booklet. Hover states (row highlighting) provide <em>signifiers</em> indicating each row is clickable/playable — an affordance that maps directly to "selecting a track."
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">4</span> Bottom Playback Bar</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            <span class="tag tag-affordance">Affordance</span>
+            The persistent playbar at the bottom is a digital version of a <em>physical media player's control panel</em>. Transport controls (⏮ ⏪ ▶ ⏩ ⏭) use universal symbols derived from cassette players. The progress bar affords scrubbing (click-and-drag), and the volume slider mimics a physical knob/fader.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ANNOTATED SCREENSHOT 2: Search & Browse ===== -->
+  <section>
+    <h2>Annotated Screenshot 2 — Search &amp; Browse</h2>
+    <div class="card">
+      <div class="screenshot-wrapper">
+        <div class="spotify-mockup" style="width:100%;">
+          <div class="mockup-inner" style="min-height:380px;">
+            <div class="mockup-sidebar">
+              <div class="logo">● Spotify</div>
+              <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
+              <div class="nav-item active"><span class="nav-icon">🔍</span> Search</div>
+              <div class="library-label">Your Library</div>
+              <div class="nav-item"><span class="nav-icon">📚</span> Your Library</div>
+            </div>
+            <div class="mockup-main" style="background:linear-gradient(180deg,#2a1a3a 0%,#121212 30%);">
+              <div style="background:#333;border-radius:24px;padding:.5rem 1rem;display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1.4rem;width:60%;max-width:400px;">
+                <span>🔍</span>
+                <span style="color:#aaa;font-size:.85rem;">What do you want to listen to?</span>
+              </div>
+              <h2 style="font-size:1.2rem;margin-bottom:1rem;">Browse All</h2>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;">
+                <div style="background:#e13300;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Podcasts
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎙️</div>
+                </div>
+                <div style="background:#8400e7;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Charts
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">📊</div>
+                </div>
+                <div style="background:#1e3264;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Made For You
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">✨</div>
+                </div>
+                <div style="background:#e8115b;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Pop
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎵</div>
+                </div>
+                <div style="background:#148a08;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Hip-Hop
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎤</div>
+                </div>
+                <div style="background:#e91429;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
+                  Rock
+                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎸</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <h3>Key Design Features — Search &amp; Genre Browsing</h3>
+        <div class="annotation-container">
+          <div class="annotation">
+            <strong><span class="num-circle">5</span> Search Bar — "Record Store Clerk"</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            <span class="tag tag-affordance">Affordance</span>
+            The rounded search bar with magnifying glass icon and placeholder text ("What do you want to listen to?") acts as a <em>digital concierge</em> — a metaphor for asking a record-store clerk for recommendations. The pill shape and icon provide a clear <em>signifier</em> that text input is expected.
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">6</span> Genre Cards — "Browsing Aisles"</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            Colorful genre cards simulate <em>browsing aisles in a music store</em>, where each section has a distinct color/label. The bold colors and tilted imagery create visual differentiation similar to colored dividers in a physical record bin.
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">7</span> "Made For You" Section</strong>
+            <span class="tag tag-metaphor">Metaphor</span>
+            <span class="tag tag-critique">Critique</span>
+            "Made For You" is a <em>personal tailor</em> metaphor — the algorithm "stitches together" a custom experience. However, this can feel opaque; users cannot see <em>why</em> certain songs are recommended, breaking the metaphor of a transparent, trust-based human recommendation.
+          </div>
+          <div class="annotation">
+            <strong><span class="num-circle">8</span> Card Hover / Tap Affordance</strong>
+            <span class="tag tag-affordance">Affordance</span>
+            Each genre card scales slightly and shows a subtle shadow on hover — an affordance that communicates interactivity. On mobile, the card's size and spacing are designed for comfortable <em>thumb-tap targets</em>, following Fitts's Law.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEEP ANALYSIS ===== -->
+  <section>
+    <h2>Deep Analysis: Metaphors in Spotify</h2>
+    <table>
+      <thead>
+        <tr><th>UI Element</th><th>Real-World Metaphor</th><th>Effect on User</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Library / Shelf</strong></td>
+          <td>Physical bookshelf of music — vinyl collections, CD racks</td>
+          <td>Creates a sense of <em>ownership</em> and personal space within a streaming service where you technically own nothing</td>
+        </tr>
+        <tr>
+          <td><strong>Playlist</strong></td>
+          <td>Mixtape / custom CD compilation</td>
+          <td>Empowers users to curate and share, echoing the deeply personal act of making a mixtape for someone</td>
+        </tr>
+        <tr>
+          <td><strong>Radio</strong></td>
+          <td>FM/AM radio broadcast</td>
+          <td>Implies effortless, lean-back listening without decision fatigue — "just tune in"</td>
+        </tr>
+        <tr>
+          <td><strong>Queue</strong></td>
+          <td>Jukebox queue / "up next" list</td>
+          <td>Gives users control over sequencing, like lining up songs on a jukebox</td>
+        </tr>
+        <tr>
+          <td><strong>Album Cover Art</strong></td>
+          <td>Physical album cover / poster</td>
+          <td>Provides visual identity, nostalgia, and artist branding — critical for emotional connection</td>
+        </tr>
+        <tr>
+          <td><strong>Heart / Like</strong></td>
+          <td>Putting a gold star or sticker on a favorite record</td>
+          <td>A quick, emotional gesture of approval that also trains the recommendation engine</td>
+        </tr>
+        <tr>
+          <td><strong>Shuffle</strong></td>
+          <td>Shuffling a deck of cards / randomizing order</td>
+          <td>Introduces serendipity, breaking the fixed-order convention of traditional albums</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Deep Analysis: Affordances in Spotify</h2>
+    <table>
+      <thead>
+        <tr><th>UI Element</th><th>Affordance Type</th><th>Design Details</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Play Button (▶)</strong></td>
+          <td>Perceived / Explicit</td>
+          <td>High-contrast green circle with universal symbol. Appears on hover over album art too — a <em>hidden affordance</em> that reveals on interaction.</td>
+        </tr>
+        <tr>
+          <td><strong>Progress Bar</strong></td>
+          <td>Physical / Draggable</td>
+          <td>Thin bar with a scrub handle that appears on hover. Mimics a physical slider — users intuitively know to click and drag. The filled portion (green) provides <em>feedback</em> of elapsed time.</td>
+        </tr>
+        <tr>
+          <td><strong>Volume Slider</strong></td>
+          <td>Perceived / Draggable</td>
+          <td>Mirrors a physical mixing-board fader. The speaker icon changes (muted ↔ loud) as feedback, reinforcing the <em>mapping</em> between position and loudness.</td>
+        </tr>
+        <tr>
+          <td><strong>Hover-Reveal Play on Cards</strong></td>
+          <td>Hidden Affordance</td>
+          <td>A green play button appears over album/playlist cards only on hover. This keeps the UI clean but may reduce <em>discoverability</em> for new users — a trade-off between aesthetics and learnability.</td>
+        </tr>
+        <tr>
+          <td><strong>Drag-to-Reorder (Playlists)</strong></td>
+          <td>Physical / Gestural</td>
+          <td>Users can drag tracks to reorder within playlists. The grab cursor and row displacement provide clear signifiers. Maps to the physical act of rearranging CDs on a shelf.</td>
+        </tr>
+        <tr>
+          <td><strong>Right-Click Context Menu</strong></td>
+          <td>Hidden Affordance</td>
+          <td>Right-clicking reveals options (Add to Playlist, Share, Go to Artist). This follows OS conventions but is completely invisible — users must already know the pattern.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== CRITIQUE ===== -->
+  <section>
+    <h2>Critique &amp; Observations</h2>
+    <div class="card">
+      <div class="card-body">
+        <h3>Strengths</h3>
+        <ul>
+          <li><strong>Consistent metaphor language:</strong> Spotify maintains a cohesive "personal music collection" metaphor throughout — Library, Playlists, Albums, Artists — giving users a familiar mental model even in a streaming context.</li>
+          <li><strong>Progressive disclosure:</strong> Affordances are layered — primary actions (play) are always visible, secondary actions (add to playlist, share) are revealed on hover or right-click, preventing cognitive overload.</li>
+          <li><strong>Cross-platform consistency:</strong> The green play button, dark theme, and transport controls remain consistent across desktop, mobile, and web, reinforcing learned affordances.</li>
+          <li><strong>Physical-to-digital mapping:</strong> The transport controls (⏮ ▶ ⏭) perfectly map Don Norman's concept of <em>natural mapping</em> — left means backward, right means forward, matching reading direction.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.2rem;">
+      <div class="card-body">
+        <h3>Weaknesses &amp; Critique</h3>
+        <ul>
+          <li><strong>Over-reliance on hidden affordances:</strong> Many powerful features (lyrics, queue, collaborative playlists) are buried behind icons with no labels. New users may never discover them without external guidance — violating the principle of <em>discoverability</em>.</li>
+          <li><strong>"Shuffle" metaphor mismatch:</strong> The shuffle button on free-tier playlists <em>forces</em> shuffle mode, breaking the metaphor of user agency. Users expect shuffle to be optional, but Spotify uses it as a business constraint — a case where <em>dark pattern</em> undermines the affordance.</li>
+          <li><strong>Algorithmic opacity:</strong> "Made For You" and "Discover Weekly" are powerful but act as <em>black boxes</em>. The "personal DJ" metaphor falls apart because you cannot ask the DJ <em>why</em> they chose a song or request a different direction conversationally.</li>
+          <li><strong>Inconsistent affordance signals:</strong> Some elements (e.g., artist names in the playbar) are clickable links, but they appear identical to plain text — a <em>false affordance</em> where the visual does not match the interactive potential.</li>
+          <li><strong>Mobile gesture conflicts:</strong> On mobile, swipe gestures on tracks (delete, add to queue) sometimes conflict with OS-level gestures (back navigation), creating <em>affordance ambiguity</em>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONCEPTS ===== -->
+  <section>
+    <h2>Key Concepts Applied</h2>
+    <table>
+      <thead>
+        <tr><th>Concept (Norman, 1988)</th><th>How Spotify Applies It</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Affordance</strong></td><td>Play buttons, sliders, clickable cards all signal their function through shape, color, and feedback</td></tr>
+        <tr><td><strong>Signifier</strong></td><td>Icons (🔍 ❤️ ▶), cursor changes, hover states, and color cues guide user attention</td></tr>
+        <tr><td><strong>Mapping</strong></td><td>Transport controls follow natural left-right mapping; volume slider maps up = louder</td></tr>
+        <tr><td><strong>Feedback</strong></td><td>Progress bar animation, color changes on like/save, sound waveform visualization</td></tr>
+        <tr><td><strong>Conceptual Model</strong></td><td>"Personal music collection" — even though streaming, users feel they own their library</td></tr>
+        <tr><td><strong>Constraint</strong></td><td>Free-tier limitations (forced shuffle, ads) constrain actions to encourage upgrade — a business constraint layered on top of design</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== CONCLUSION ===== -->
+  <section>
+    <h2>Conclusion</h2>
+    <p>
+      Spotify demonstrates a masterful use of <strong>metaphor</strong> to create familiarity in a digital-only product —
+      transforming the intangible act of streaming into something that feels like curating a personal music collection.
+      Its <strong>affordances</strong> are generally well-designed, leveraging universal symbols and physical-to-digital
+      mappings that reduce learning curves.
+    </p>
+    <p>
+      However, the analysis reveals tension between <em>aesthetic minimalism</em> and <em>discoverability</em>.
+      Spotify's reliance on hidden affordances and algorithmic opacity, while visually clean, may alienate less
+      tech-savvy users. The forced-shuffle dark pattern on free tier also demonstrates how business goals can
+      subvert good affordance design.
+    </p>
+    <p>
+      Overall, Spotify is a strong example of how thoughtful metaphor and affordance design can make a complex
+      digital product feel intuitive — while also illustrating the compromises that arise when design serves both
+      usability and revenue.
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  CMAA5043 — Design Activity Week 7-1 &nbsp;|&nbsp; Metaphor &amp; Affordance Deconstruction &nbsp;|&nbsp; 2026
+</footer>
+
+</body>
+</html>
