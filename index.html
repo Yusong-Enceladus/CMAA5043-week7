@@ -3,665 +3,1080 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Week 7-1: Metaphor & Affordance Deconstruction — Spotify</title>
+  <title>Week 7 Design Activities — CMAA5043</title>
   <style>
     :root {
-      --bg: #0f0f0f;
-      --card: #181818;
-      --accent: #1db954;
-      --accent2: #1ed760;
+      --bg: #0a0a0a;
+      --card: #151515;
+      --accent: #6c5ce7;
+      --accent2: #a29bfe;
+      --green: #1db954;
+      --coral: #ff6b6b;
+      --blue: #4ecdc4;
       --text: #e0e0e0;
-      --muted: #999;
-      --border: #282828;
+      --muted: #888;
+      --border: #222;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
 
-    body {
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
+    /* ---- Nav ---- */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; padding: .7rem 1rem; flex-wrap: wrap;
     }
+    .topnav a {
+      color: var(--muted); text-decoration: none; font-size: .85rem; font-weight: 600;
+      padding: .35rem .9rem; border-radius: 20px; transition: all .2s;
+    }
+    .topnav a:hover, .topnav a.active { color: #fff; background: var(--accent); }
+    .topnav .brand { color: #fff; font-weight: 800; font-size: 1rem; margin-right: auto; }
 
     /* ---- Hero ---- */
     .hero {
-      min-height: 60vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 4rem 2rem;
-      background: linear-gradient(135deg, #1db95422 0%, #0f0f0f 60%);
+      min-height: 55vh; display: flex; flex-direction: column; justify-content: center;
+      align-items: center; text-align: center; padding: 4rem 2rem;
+      background: linear-gradient(135deg, #6c5ce722 0%, var(--bg) 60%);
     }
-    .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: .6rem; }
-    .hero h1 span { color: var(--accent); }
-    .hero .subtitle { font-size: 1.2rem; color: var(--muted); max-width: 640px; }
-    .hero .meta {
-      margin-top: 2rem;
-      font-size: .9rem;
-      color: var(--muted);
+    .hero h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: .5rem; }
+    .hero h1 span { color: var(--accent2); }
+    .hero .subtitle { font-size: 1.1rem; color: var(--muted); max-width: 700px; margin-bottom: 2rem; }
+    .hero .nav-cards { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .hero .nav-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.2rem 1.6rem; text-decoration: none; color: var(--text);
+      transition: all .25s; width: 260px; text-align: left;
     }
-    .hero .meta a { color: var(--accent); text-decoration: none; }
-    .hero .meta a:hover { text-decoration: underline; }
+    .hero .nav-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .hero .nav-card h3 { font-size: 1rem; color: #fff; margin-bottom: .3rem; }
+    .hero .nav-card p { font-size: .8rem; color: var(--muted); }
+    .nav-card .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      font-size: .65rem; font-weight: 700; margin-bottom: .4rem;
+    }
+    .badge-1 { background: #1db95433; color: #1ed760; }
+    .badge-2 { background: #ff6b6b33; color: #ff6b6b; }
+    .badge-3 { background: #4ecdc433; color: #4ecdc4; }
 
     /* ---- Container ---- */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* ---- Activity Divider ---- */
+    .activity-divider {
+      padding: 3rem 2rem; text-align: center;
+      margin-top: 2rem; border-top: 2px solid var(--border);
+    }
+    .activity-divider h2 { font-size: 2rem; font-weight: 800; margin-bottom: .3rem; }
+    .activity-divider p { color: var(--muted); font-size: .95rem; }
+    .activity-divider .app-link { color: var(--accent2); }
 
     /* ---- Section ---- */
-    section { margin-top: 4rem; }
+    section { margin-top: 3rem; }
     section > h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 1.2rem;
-      border-left: 4px solid var(--accent);
+      font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem;
       padding-left: 1rem;
     }
+    .border-green { border-left: 4px solid var(--green); }
+    .border-coral { border-left: 4px solid var(--coral); }
+    .border-blue  { border-left: 4px solid var(--blue); }
     section > p, section > ul { margin-bottom: 1rem; }
     ul { padding-left: 1.4rem; }
     li { margin-bottom: .5rem; }
 
-    /* ---- Analysis Card ---- */
-    .analysis-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2.4rem;
-      margin-top: 2rem;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .card-body { padding: 1.6rem 2rem; }
-    .card-body h3 { font-size: 1.3rem; margin-bottom: .8rem; color: #fff; }
-    .card-body .tag {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: .75rem;
-      font-weight: 600;
-      margin-right: 6px;
-      margin-bottom: 8px;
-    }
-    .tag-metaphor { background: #1db95433; color: var(--accent2); }
+    /* ---- Card ---- */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .card-body { padding: 1.4rem 1.8rem; }
+    .card-body h3 { font-size: 1.2rem; margin-bottom: .7rem; color: #fff; }
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .7rem; font-weight: 600; margin-right: 5px; margin-bottom: 6px; }
+    .tag-metaphor { background: #1db95433; color: #1ed760; }
     .tag-affordance { background: #3b82f633; color: #60a5fa; }
     .tag-critique { background: #f59e0b33; color: #fbbf24; }
+    .tag-pattern { background: #ff6b6b33; color: #ff6b6b; }
 
-    /* ---- Annotated Screenshot ---- */
-    .screenshot-wrapper {
-      position: relative;
-      background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .screenshot-wrapper img {
-      width: 100%;
-      display: block;
-    }
-
-    /* SVG-based mockup */
-    .mockup {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #111;
-    }
-
-    /* ---- Annotation Layer ---- */
-    .annotation-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin-top: 1rem;
-    }
-    .annotation {
-      background: #1a1a1a;
-      border-left: 3px solid var(--accent);
-      padding: .8rem 1rem;
-      border-radius: 0 8px 8px 0;
-      font-size: .9rem;
-    }
+    /* ---- Annotations ---- */
+    .annotation-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .8rem; }
+    .annotation { background: #1a1a1a; border-left: 3px solid var(--accent); padding: .7rem 1rem; border-radius: 0 8px 8px 0; font-size: .88rem; }
+    .annotation.a-green { border-left-color: var(--green); }
+    .annotation.a-coral { border-left-color: var(--coral); }
+    .annotation.a-blue  { border-left-color: var(--blue); }
     .annotation strong { color: #fff; display: block; margin-bottom: .2rem; }
 
-    /* ---- Comparison Table ---- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    th, td {
-      text-align: left;
-      padding: .8rem 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    th { color: var(--accent); font-weight: 600; font-size: .9rem; text-transform: uppercase; letter-spacing: .04em; }
-    td { color: var(--text); }
+    /* ---- Table ---- */
+    table { width: 100%; border-collapse: collapse; margin-top: .8rem; }
+    th, td { text-align: left; padding: .7rem 1rem; border-bottom: 1px solid var(--border); }
+    th { color: var(--accent2); font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+    td { color: var(--text); font-size: .9rem; }
     tr:hover td { background: #1a1a1a; }
 
     /* ---- Footer ---- */
-    footer {
-      text-align: center;
-      padding: 3rem 2rem;
-      color: var(--muted);
-      font-size: .85rem;
-      border-top: 1px solid var(--border);
-    }
+    footer { text-align: center; padding: 2.5rem 2rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--border); }
+
+    /* ---- Num circle ---- */
+    .nc { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; color: #000; font-weight: 700; font-size: .7rem; flex-shrink: 0; }
+    .nc-green { background: var(--green); }
+    .nc-coral { background: var(--coral); }
+    .nc-blue  { background: var(--blue); }
 
     /* ---- Responsive ---- */
     @media (max-width: 700px) {
-      .hero h1 { font-size: 1.8rem; }
+      .hero h1 { font-size: 1.6rem; }
       .annotation-container { grid-template-columns: 1fr; }
-      .container { padding: 0 1rem 4rem; }
+      .container { padding: 0 1rem 3rem; }
+      .mockup-inner, .airbnb-inner { grid-template-columns: 1fr !important; }
+      .mockup-sidebar, .airbnb-sidebar { display: none !important; }
+      .mockup-playbar { grid-template-columns: 1fr !important; }
+      .proto-screens { grid-template-columns: 1fr !important; }
     }
 
-    /* ---- Mockup Styles ---- */
-    .spotify-mockup {
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    .mockup-inner {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: 480px;
-      background: #121212;
-      font-size: .85rem;
-    }
-    .mockup-sidebar {
-      background: #000;
-      padding: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: .6rem;
-    }
-    .mockup-sidebar .logo { color: #fff; font-weight: 800; font-size: 1.1rem; margin-bottom: .6rem; }
-    .mockup-sidebar .nav-item {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      color: #b3b3b3;
-      padding: .4rem 0;
-      cursor: default;
-    }
+    /* ===== SPOTIFY MOCKUP ===== */
+    .spotify-mockup { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    .mockup-inner { display: grid; grid-template-columns: 220px 1fr; min-height: 420px; background: #121212; font-size: .82rem; }
+    .mockup-sidebar { background: #000; padding: 1rem; display: flex; flex-direction: column; gap: .5rem; }
+    .mockup-sidebar .logo { color: #fff; font-weight: 800; font-size: 1rem; margin-bottom: .4rem; }
+    .mockup-sidebar .nav-item { display: flex; align-items: center; gap: .5rem; color: #b3b3b3; padding: .3rem 0; }
     .mockup-sidebar .nav-item.active { color: #fff; }
-    .mockup-sidebar .nav-icon { width: 20px; text-align: center; }
-    .mockup-sidebar .library-label {
-      color: #b3b3b3;
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      margin-top: .8rem;
-      margin-bottom: .2rem;
-    }
-    .mockup-sidebar .playlist {
-      color: #b3b3b3;
-      padding: .25rem 0;
-      font-size: .8rem;
-      cursor: default;
-    }
-    .mockup-sidebar .playlist:hover { color: #fff; }
-    .mockup-main {
-      padding: 1.6rem 2rem;
-      background: linear-gradient(180deg, #1a3a2a 0%, #121212 30%);
-    }
-    .mockup-main h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
-    .mockup-main .sub { color: #b3b3b3; font-size: .8rem; margin-bottom: 1.2rem; }
-    .play-btn {
-      width: 44px; height: 44px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
-      cursor: default;
-    }
-    .play-btn::after { content: "▶"; color: #000; font-size: 1rem; margin-left: 2px; }
+    .mockup-sidebar .playlist { color: #b3b3b3; padding: .2rem 0; font-size: .78rem; }
+    .mockup-main { padding: 1.4rem 1.6rem; background: linear-gradient(180deg, #1a3a2a 0%, #121212 30%); }
+    .mockup-main h2 { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: .2rem; }
+    .mockup-main .sub { color: #b3b3b3; font-size: .75rem; margin-bottom: 1rem; }
+    .play-btn { width: 40px; height: 40px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: .8rem; }
+    .play-btn::after { content: "\25B6"; color: #000; font-size: .9rem; margin-left: 2px; }
     .track-list { list-style: none; padding: 0; }
-    .track-list li {
-      display: grid;
-      grid-template-columns: 24px 1fr 60px;
-      gap: .6rem;
-      padding: .5rem .4rem;
-      border-radius: 4px;
-      color: #b3b3b3;
-      align-items: center;
-    }
+    .track-list li { display: grid; grid-template-columns: 22px 1fr 50px; gap: .5rem; padding: .4rem; border-radius: 4px; color: #b3b3b3; align-items: center; }
     .track-list li:hover { background: #ffffff11; }
-    .track-list .num { text-align: right; font-size: .8rem; }
-    .track-list .title-col .t-name { color: #fff; }
-    .track-list .title-col .t-artist { font-size: .75rem; }
-    .track-list .dur { font-size: .8rem; text-align: right; }
-
-    /* Playbar */
-    .mockup-playbar {
-      grid-column: 1 / -1;
-      background: #181818;
-      border-top: 1px solid #282828;
-      padding: .6rem 1.2rem;
-      display: grid;
-      grid-template-columns: 200px 1fr 160px;
-      align-items: center;
-      gap: 1rem;
-    }
-    .playbar-left { display: flex; align-items: center; gap: .6rem; }
-    .playbar-thumb { width: 40px; height: 40px; background: #333; border-radius: 4px; }
-    .playbar-info .pb-title { color: #fff; font-size: .8rem; }
-    .playbar-info .pb-artist { color: #b3b3b3; font-size: .7rem; }
-    .playbar-center { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
-    .playbar-controls { display: flex; gap: .8rem; color: #b3b3b3; font-size: .9rem; }
-    .playbar-controls span { cursor: default; }
-    .playbar-controls .play-small {
-      width: 28px; height: 28px;
-      background: #fff; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #000; font-size: .7rem;
-    }
-    .progress-bar { width: 100%; height: 4px; background: #404040; border-radius: 2px; position: relative; }
-    .progress-fill { width: 35%; height: 100%; background: var(--accent); border-radius: 2px; }
-    .playbar-right { display: flex; gap: .6rem; align-items: center; color: #b3b3b3; font-size: .8rem; justify-content: flex-end; }
-    .vol-bar { width: 80px; height: 4px; background: #404040; border-radius: 2px; }
+    .track-list .t-name { color: #fff; }
+    .track-list .t-artist { font-size: .72rem; }
+    .mockup-playbar { grid-column: 1 / -1; background: #181818; border-top: 1px solid #282828; padding: .5rem 1rem; display: grid; grid-template-columns: 180px 1fr 140px; align-items: center; gap: .8rem; }
+    .playbar-left { display: flex; align-items: center; gap: .5rem; }
+    .playbar-thumb { width: 36px; height: 36px; background: #333; border-radius: 4px; }
+    .pb-title { color: #fff; font-size: .78rem; }
+    .pb-artist { color: #b3b3b3; font-size: .68rem; }
+    .playbar-center { display: flex; flex-direction: column; align-items: center; gap: .2rem; }
+    .playbar-controls { display: flex; gap: .7rem; color: #b3b3b3; font-size: .85rem; }
+    .play-small { width: 26px; height: 26px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-size: .65rem; }
+    .progress-bar { width: 100%; height: 4px; background: #404040; border-radius: 2px; }
+    .progress-fill { width: 35%; height: 100%; background: var(--green); border-radius: 2px; }
+    .playbar-right { display: flex; gap: .5rem; align-items: center; color: #b3b3b3; font-size: .78rem; justify-content: flex-end; }
+    .vol-bar { width: 70px; height: 4px; background: #404040; border-radius: 2px; }
     .vol-fill { width: 60%; height: 100%; background: #fff; border-radius: 2px; }
 
-    /* annotations highlight overlay */
-    .highlight-ring {
-      position: absolute;
-      border: 2px solid var(--accent);
-      border-radius: 8px;
-      pointer-events: none;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(29,185,84,.4); }
-      50% { box-shadow: 0 0 0 6px rgba(29,185,84,0); }
-    }
+    /* ===== AIRBNB MOCKUP ===== */
+    .airbnb-mockup { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: #fff; color: #222; font-size: .82rem; }
+    .airbnb-header { background: #fff; padding: .8rem 1.4rem; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
+    .airbnb-logo { color: #ff385c; font-weight: 800; font-size: 1.1rem; }
+    .airbnb-search { display: flex; align-items: center; background: #f7f7f7; border: 1px solid #ddd; border-radius: 40px; padding: .3rem .4rem; gap: 0; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .airbnb-search .seg { padding: .3rem .8rem; font-size: .75rem; color: #222; border-right: 1px solid #ddd; }
+    .airbnb-search .seg:last-child { border-right: none; }
+    .airbnb-search .seg strong { display: block; font-size: .7rem; }
+    .airbnb-search .seg span { color: #717171; }
+    .airbnb-search .search-btn { width: 28px; height: 28px; background: #ff385c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .7rem; margin-left: .3rem; }
+    .airbnb-nav-user { display: flex; align-items: center; gap: .8rem; font-size: .78rem; color: #222; }
+    .airbnb-filters { padding: .6rem 1.4rem; display: flex; gap: .5rem; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+    .airbnb-filters .chip { padding: .3rem .7rem; border: 1px solid #ddd; border-radius: 20px; font-size: .72rem; color: #222; background: #fff; }
+    .airbnb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.2rem; padding: 1.2rem 1.4rem; }
+    .listing-card { border-radius: 12px; overflow: hidden; }
+    .listing-img { aspect-ratio: 1; border-radius: 12px; position: relative; }
+    .listing-img .heart { position: absolute; top: 8px; right: 8px; font-size: .9rem; }
+    .listing-img .dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
+    .listing-img .dot { width: 5px; height: 5px; background: rgba(255,255,255,.6); border-radius: 50%; }
+    .listing-img .dot.active { background: #fff; }
+    .listing-info { padding: .5rem 0; }
+    .listing-info .loc { font-weight: 600; color: #222; font-size: .8rem; }
+    .listing-info .dist { color: #717171; font-size: .75rem; }
+    .listing-info .price { font-weight: 600; color: #222; font-size: .8rem; margin-top: .15rem; }
+    .listing-info .rating { color: #222; font-size: .75rem; }
+    .airbnb-footer-bar { background: #f7f7f7; padding: .6rem 1.4rem; border-top: 1px solid #eee; display: flex; justify-content: center; gap: 1.6rem; font-size: .7rem; color: #717171; }
+    .airbnb-footer-bar .tab { text-align: center; }
+    .airbnb-footer-bar .tab.active { color: #ff385c; }
 
-    @media (max-width: 700px) {
-      .mockup-inner { grid-template-columns: 1fr; }
-      .mockup-sidebar { display: none; }
-      .mockup-playbar { grid-template-columns: 1fr; }
+    /* ===== PROTOTYPE MOCKUP ===== */
+    .proto-screens { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1rem; }
+    .phone-frame {
+      background: #1a1a1a; border: 2px solid #333; border-radius: 32px;
+      padding: 1rem; max-width: 340px; margin: 0 auto; width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
     }
+    .phone-notch { width: 100px; height: 6px; background: #333; border-radius: 3px; margin: 0 auto .6rem; }
+    .phone-screen { background: #111; border-radius: 20px; overflow: hidden; min-height: 520px; }
+    .proto-label { text-align: center; margin-top: .6rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
 
-    /* number circle */
-    .num-circle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #000;
-      font-weight: 700;
-      font-size: .75rem;
-      flex-shrink: 0;
+    /* Dashboard screen */
+    .dash-header { padding: .8rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .dash-header .greeting { color: #fff; font-size: .9rem; font-weight: 600; }
+    .dash-header .time { color: #aaa; font-size: .7rem; }
+    .dash-status { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: 0 1rem; }
+    .dash-stat {
+      background: #1e1e1e; border-radius: 12px; padding: .7rem;
+      display: flex; flex-direction: column; gap: .2rem;
     }
+    .dash-stat .icon { font-size: 1.1rem; }
+    .dash-stat .val { color: #fff; font-weight: 700; font-size: 1rem; }
+    .dash-stat .label { color: #888; font-size: .65rem; }
+    .dash-section-title { color: #fff; font-size: .8rem; font-weight: 700; padding: .8rem 1rem .3rem; }
+    .dash-devices { padding: 0 1rem; display: flex; flex-direction: column; gap: .4rem; }
+    .dash-device {
+      background: #1e1e1e; border-radius: 10px; padding: .6rem .8rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .dash-device .d-icon { font-size: 1.2rem; width: 32px; text-align: center; }
+    .dash-device .d-info { flex: 1; }
+    .dash-device .d-name { color: #fff; font-size: .78rem; font-weight: 600; }
+    .dash-device .d-state { color: #888; font-size: .65rem; }
+    .dash-device .d-toggle { width: 36px; height: 20px; border-radius: 10px; position: relative; }
+    .d-toggle.on { background: var(--blue); }
+    .d-toggle.off { background: #444; }
+    .d-toggle::after { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff; top: 2px; }
+    .d-toggle.on::after { right: 2px; }
+    .d-toggle.off::after { left: 2px; }
+    .dash-bottom-nav { display: flex; justify-content: space-around; padding: .6rem 0; border-top: 1px solid #222; margin-top: .6rem; }
+    .dash-bottom-nav .bnav { text-align: center; font-size: .6rem; color: #666; }
+    .dash-bottom-nav .bnav.active { color: var(--blue); }
+    .dash-bottom-nav .bnav .bnav-icon { font-size: 1rem; display: block; }
+
+    /* Scene screen */
+    .scene-header { padding: .8rem 1rem; display: flex; align-items: center; gap: .5rem; }
+    .scene-header .back { color: var(--blue); font-size: .9rem; }
+    .scene-header .title { color: #fff; font-weight: 700; font-size: .9rem; }
+    .scene-cards { padding: 0 1rem; display: flex; flex-direction: column; gap: .6rem; }
+    .scene-card {
+      border-radius: 14px; padding: 1rem; position: relative; overflow: hidden;
+      min-height: 80px; display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .scene-card .s-name { color: #fff; font-weight: 700; font-size: .85rem; }
+    .scene-card .s-desc { color: rgba(255,255,255,.7); font-size: .68rem; }
+    .scene-card .s-icon { position: absolute; top: 10px; right: 12px; font-size: 1.6rem; }
+    .scene-active { margin: .8rem 1rem 0; background: #1e1e1e; border-radius: 14px; padding: .8rem 1rem; }
+    .scene-active .sa-title { color: var(--blue); font-weight: 700; font-size: .78rem; margin-bottom: .4rem; }
+    .scene-active .sa-row { display: flex; align-items: center; gap: .5rem; padding: .25rem 0; }
+    .scene-active .sa-icon { font-size: .9rem; width: 20px; text-align: center; }
+    .scene-active .sa-text { color: #ccc; font-size: .72rem; flex: 1; }
+    .scene-active .sa-val { color: var(--blue); font-size: .72rem; font-weight: 600; }
+
+    /* Control screen */
+    .ctrl-header { padding: .8rem 1rem; display: flex; align-items: center; gap: .5rem; }
+    .ctrl-header .back { color: var(--blue); font-size: .9rem; }
+    .ctrl-header .title { color: #fff; font-weight: 700; font-size: .9rem; }
+    .ctrl-big-circle {
+      width: 160px; height: 160px; border-radius: 50%;
+      border: 4px solid var(--blue); margin: 1rem auto;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .ctrl-big-circle .c-val { color: #fff; font-size: 2.2rem; font-weight: 800; }
+    .ctrl-big-circle .c-unit { color: #888; font-size: .7rem; }
+    .ctrl-modes { display: flex; justify-content: center; gap: .6rem; padding: .5rem 1rem; }
+    .ctrl-mode { background: #1e1e1e; border-radius: 10px; padding: .5rem .8rem; text-align: center; font-size: .7rem; color: #888; min-width: 60px; }
+    .ctrl-mode.active { background: var(--blue); color: #000; font-weight: 600; }
+    .ctrl-slider-section { padding: .8rem 1rem; }
+    .ctrl-slider-label { color: #888; font-size: .7rem; margin-bottom: .3rem; }
+    .ctrl-slider { width: 100%; height: 6px; background: #333; border-radius: 3px; position: relative; margin-bottom: .8rem; }
+    .ctrl-slider-fill { height: 100%; border-radius: 3px; }
+    .ctrl-slider-fill.fill-blue { background: var(--blue); }
+    .ctrl-slider-fill.fill-yellow { background: #feca57; }
+    .ctrl-schedule { background: #1e1e1e; border-radius: 12px; margin: .4rem 1rem; padding: .7rem .8rem; }
+    .ctrl-schedule .cs-title { color: #fff; font-size: .75rem; font-weight: 600; margin-bottom: .3rem; }
+    .ctrl-schedule .cs-row { display: flex; justify-content: space-between; font-size: .68rem; color: #888; padding: .15rem 0; }
+    .ctrl-schedule .cs-row .cs-time { color: var(--blue); }
   </style>
 </head>
 <body>
 
+<!-- ===== TOP NAV ===== -->
+<nav class="topnav">
+  <span class="brand">CMAA5043 Week 7</span>
+  <a href="#activity1">Activity 1</a>
+  <a href="#activity2">Activity 2</a>
+  <a href="#activity3">Activity 3</a>
+</nav>
+
 <!-- ===== HERO ===== -->
 <header class="hero">
-  <h1>Metaphor &amp; Affordance<br>Deconstruction: <span>Spotify</span></h1>
+  <h1>Week 7 <span>Design Activities</span></h1>
   <p class="subtitle">
-    An analysis of how Spotify leverages real-world metaphors and UI affordances to create an intuitive music streaming experience.
+    Design paradigm &amp; language deconstruction, and prototype design for the final project.
   </p>
-  <p class="meta">
-    CMAA5043 — Design Activity Week 7-1 &nbsp;|&nbsp;
-    App URL: <a href="https://open.spotify.com" target="_blank" rel="noopener">open.spotify.com</a>
-  </p>
+  <div class="nav-cards">
+    <a href="#activity1" class="nav-card">
+      <div class="badge badge-1">ACTIVITY 1</div>
+      <h3>Metaphor &amp; Affordance</h3>
+      <p>Deconstruction of Spotify's interaction design paradigm</p>
+    </a>
+    <a href="#activity2" class="nav-card">
+      <div class="badge badge-2">ACTIVITY 2</div>
+      <h3>Pattern Language</h3>
+      <p>Deconstruction of Airbnb's design pattern language</p>
+    </a>
+    <a href="#activity3" class="nav-card">
+      <div class="badge badge-3">ACTIVITY 3</div>
+      <h3>Prototype Design</h3>
+      <p>Hi-fi prototype for Smart Home AIOT dashboard</p>
+    </a>
+  </div>
 </header>
+
+<!-- ============================================================ -->
+<!-- ===== ACTIVITY 1: METAPHOR & AFFORDANCE — SPOTIFY ========= -->
+<!-- ============================================================ -->
+
+<div id="activity1" class="activity-divider" style="border-color: var(--green);">
+  <h2 style="color:var(--green);">Activity 1: Metaphor &amp; Affordance Deconstruction</h2>
+  <p>App: <a class="app-link" href="https://open.spotify.com" target="_blank" rel="noopener" style="color:var(--green);">Spotify — open.spotify.com</a></p>
+</div>
 
 <div class="container">
 
-  <!-- ===== INTRO ===== -->
   <section>
-    <h2>Why Spotify?</h2>
-    <p>
-      Spotify is one of the most widely used digital music platforms, serving over 600 million users worldwide.
-      Its interface is rich with <strong>metaphors</strong> borrowed from physical music experiences and
-      <strong>affordances</strong> that guide user interaction. This makes it an excellent case study for
-      deconstructing how design concepts translate into digital product decisions.
-    </p>
+    <h2 class="border-green">Why Spotify?</h2>
+    <p>Spotify serves over 600 million users worldwide. Its interface is rich with <strong>metaphors</strong> from physical music experiences and <strong>affordances</strong> that guide interaction — making it ideal for this deconstruction.</p>
   </section>
 
-  <!-- ===== ANNOTATED SCREENSHOT 1: Desktop Overview ===== -->
+  <!-- Screenshot 1: Desktop Player -->
   <section>
-    <h2>Annotated Screenshot 1 — Desktop Player</h2>
+    <h2 class="border-green">Annotated Screenshot 1 — Desktop Player</h2>
     <div class="card">
-      <div class="screenshot-wrapper" style="position:relative;">
+      <div style="background:#111;">
         <div class="spotify-mockup" style="width:100%;">
           <div class="mockup-inner">
-            <!-- Sidebar -->
             <div class="mockup-sidebar">
               <div class="logo">● Spotify</div>
-              <div class="nav-item active"><span class="nav-icon">🏠</span> Home</div>
-              <div class="nav-item"><span class="nav-icon">🔍</span> Search</div>
-              <div class="library-label">Your Library</div>
-              <div class="nav-item"><span class="nav-icon">📚</span> Your Library</div>
-              <div style="margin-top:.4rem;display:flex;gap:.4rem;">
-                <span style="background:#333;padding:2px 10px;border-radius:20px;font-size:.7rem;color:#fff;">Playlists</span>
-                <span style="background:#333;padding:2px 10px;border-radius:20px;font-size:.7rem;color:#fff;">Albums</span>
+              <div class="nav-item active"><span>🏠</span> Home</div>
+              <div class="nav-item"><span>🔍</span> Search</div>
+              <div class="nav-item"><span>📚</span> Your Library</div>
+              <div style="margin-top:.4rem;display:flex;gap:.3rem;">
+                <span style="background:#333;padding:2px 8px;border-radius:20px;font-size:.65rem;color:#fff;">Playlists</span>
+                <span style="background:#333;padding:2px 8px;border-radius:20px;font-size:.65rem;color:#fff;">Albums</span>
               </div>
               <div class="playlist">Liked Songs ❤️</div>
               <div class="playlist">Discover Weekly</div>
               <div class="playlist">Chill Vibes</div>
               <div class="playlist">Workout Energy</div>
-              <div class="playlist">Late Night Jazz</div>
             </div>
-            <!-- Main Content -->
             <div class="mockup-main">
               <h2>Chill Vibes</h2>
               <div class="sub">Playlist · 42 songs, 2 hr 18 min</div>
               <div class="play-btn"></div>
               <ul class="track-list">
-                <li><span class="num">1</span><div class="title-col"><span class="t-name">Blinding Lights</span><br><span class="t-artist">The Weeknd</span></div><span class="dur">3:20</span></li>
-                <li><span class="num">2</span><div class="title-col"><span class="t-name">Watermelon Sugar</span><br><span class="t-artist">Harry Styles</span></div><span class="dur">2:54</span></li>
-                <li><span class="num">3</span><div class="title-col"><span class="t-name">Levitating</span><br><span class="t-artist">Dua Lipa</span></div><span class="dur">3:23</span></li>
-                <li><span class="num">4</span><div class="title-col"><span class="t-name">Stay</span><br><span class="t-artist">The Kid LAROI, Justin Bieber</span></div><span class="dur">2:21</span></li>
-                <li><span class="num">5</span><div class="title-col"><span class="t-name">Peaches</span><br><span class="t-artist">Justin Bieber</span></div><span class="dur">3:18</span></li>
+                <li><span>1</span><div><span class="t-name">Blinding Lights</span><br><span class="t-artist">The Weeknd</span></div><span>3:20</span></li>
+                <li><span>2</span><div><span class="t-name">Watermelon Sugar</span><br><span class="t-artist">Harry Styles</span></div><span>2:54</span></li>
+                <li><span>3</span><div><span class="t-name">Levitating</span><br><span class="t-artist">Dua Lipa</span></div><span>3:23</span></li>
+                <li><span>4</span><div><span class="t-name">Stay</span><br><span class="t-artist">The Kid LAROI</span></div><span>2:21</span></li>
+                <li><span>5</span><div><span class="t-name">Peaches</span><br><span class="t-artist">Justin Bieber</span></div><span>3:18</span></li>
               </ul>
             </div>
-            <!-- Play Bar -->
             <div class="mockup-playbar">
-              <div class="playbar-left">
-                <div class="playbar-thumb"></div>
-                <div class="playbar-info">
-                  <div class="pb-title">Blinding Lights</div>
-                  <div class="pb-artist">The Weeknd</div>
-                </div>
-              </div>
-              <div class="playbar-center">
-                <div class="playbar-controls">
-                  <span>⏮</span>
-                  <span>⏪</span>
-                  <div class="play-small">▶</div>
-                  <span>⏩</span>
-                  <span>⏭</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill"></div></div>
-              </div>
-              <div class="playbar-right">
-                <span>🔊</span>
-                <div class="vol-bar"><div class="vol-fill"></div></div>
-              </div>
+              <div class="playbar-left"><div class="playbar-thumb"></div><div><div class="pb-title">Blinding Lights</div><div class="pb-artist">The Weeknd</div></div></div>
+              <div class="playbar-center"><div class="playbar-controls"><span>⏮</span><span>⏪</span><div class="play-small">▶</div><span>⏩</span><span>⏭</span></div><div class="progress-bar"><div class="progress-fill"></div></div></div>
+              <div class="playbar-right"><span>🔊</span><div class="vol-bar"><div class="vol-fill"></div></div></div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="card-body">
-        <h3>Key Design Features — Desktop Player Overview</h3>
+        <h3>Key Design Features</h3>
         <div class="annotation-container">
-          <div class="annotation">
-            <strong><span class="num-circle">1</span> Sidebar "Library" Navigation</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            The left sidebar mimics a <em>personal music shelf</em> — a physical metaphor of browsing through your own record collection. "Your Library" evokes ownership and personal curation, just as one would organize CDs or vinyl on a shelf.
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">2</span> Green Play Button</strong>
-            <span class="tag tag-affordance">Affordance</span>
-            The large, circular green play button is a classic <em>perceived affordance</em>. Its shape, color (high contrast against dark background), and familiar ▶ icon all signal "press me to start playback." The circular form references physical play buttons on CD/cassette players.
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">3</span> Track List Layout</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            <span class="tag tag-affordance">Affordance</span>
-            The numbered track list mirrors the back of a physical album cover or CD booklet. Hover states (row highlighting) provide <em>signifiers</em> indicating each row is clickable/playable — an affordance that maps directly to "selecting a track."
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">4</span> Bottom Playback Bar</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            <span class="tag tag-affordance">Affordance</span>
-            The persistent playbar at the bottom is a digital version of a <em>physical media player's control panel</em>. Transport controls (⏮ ⏪ ▶ ⏩ ⏭) use universal symbols derived from cassette players. The progress bar affords scrubbing (click-and-drag), and the volume slider mimics a physical knob/fader.
-          </div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">1</span> Sidebar "Library"</strong><span class="tag tag-metaphor">Metaphor</span>Mimics a <em>personal music shelf</em> — browsing your own record collection. "Your Library" evokes ownership even in a streaming service where you own nothing.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">2</span> Green Play Button</strong><span class="tag tag-affordance">Affordance</span>High-contrast circular button with ▶ icon — a classic <em>perceived affordance</em>. Shape and color reference physical CD/cassette play buttons.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">3</span> Track List</strong><span class="tag tag-metaphor">Metaphor</span><span class="tag tag-affordance">Affordance</span>Numbered list mirrors the back of a physical album cover. Row hover highlighting acts as a <em>signifier</em> that each track is clickable.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">4</span> Playback Bar</strong><span class="tag tag-metaphor">Metaphor</span><span class="tag tag-affordance">Affordance</span>Digital version of a physical media player's control panel. Transport controls (⏮ ▶ ⏭) use universal cassette-era symbols. Progress bar affords scrubbing; volume slider mimics a physical fader.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== ANNOTATED SCREENSHOT 2: Search & Browse ===== -->
+  <!-- Screenshot 2: Search -->
   <section>
-    <h2>Annotated Screenshot 2 — Search &amp; Browse</h2>
+    <h2 class="border-green">Annotated Screenshot 2 — Search &amp; Browse</h2>
     <div class="card">
-      <div class="screenshot-wrapper">
+      <div style="background:#111;">
         <div class="spotify-mockup" style="width:100%;">
-          <div class="mockup-inner" style="min-height:380px;">
+          <div class="mockup-inner" style="min-height:340px;">
             <div class="mockup-sidebar">
               <div class="logo">● Spotify</div>
-              <div class="nav-item"><span class="nav-icon">🏠</span> Home</div>
-              <div class="nav-item active"><span class="nav-icon">🔍</span> Search</div>
-              <div class="library-label">Your Library</div>
-              <div class="nav-item"><span class="nav-icon">📚</span> Your Library</div>
+              <div class="nav-item"><span>🏠</span> Home</div>
+              <div class="nav-item active"><span>🔍</span> Search</div>
+              <div class="nav-item"><span>📚</span> Your Library</div>
             </div>
             <div class="mockup-main" style="background:linear-gradient(180deg,#2a1a3a 0%,#121212 30%);">
-              <div style="background:#333;border-radius:24px;padding:.5rem 1rem;display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1.4rem;width:60%;max-width:400px;">
-                <span>🔍</span>
-                <span style="color:#aaa;font-size:.85rem;">What do you want to listen to?</span>
-              </div>
-              <h2 style="font-size:1.2rem;margin-bottom:1rem;">Browse All</h2>
-              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;">
-                <div style="background:#e13300;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Podcasts
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎙️</div>
-                </div>
-                <div style="background:#8400e7;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Charts
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">📊</div>
-                </div>
-                <div style="background:#1e3264;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Made For You
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">✨</div>
-                </div>
-                <div style="background:#e8115b;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Pop
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎵</div>
-                </div>
-                <div style="background:#148a08;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Hip-Hop
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎤</div>
-                </div>
-                <div style="background:#e91429;border-radius:8px;padding:1rem;font-weight:700;font-size:.9rem;aspect-ratio:1;position:relative;overflow:hidden;">
-                  Rock
-                  <div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2.4rem;">🎸</div>
-                </div>
+              <div style="background:#333;border-radius:24px;padding:.4rem .8rem;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.2rem;width:60%;max-width:360px;"><span>🔍</span><span style="color:#aaa;font-size:.8rem;">What do you want to listen to?</span></div>
+              <h2 style="font-size:1.1rem;margin-bottom:.8rem;">Browse All</h2>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;">
+                <div style="background:#e13300;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Podcasts<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">🎙️</div></div>
+                <div style="background:#8400e7;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Charts<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">📊</div></div>
+                <div style="background:#1e3264;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Made For You<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">✨</div></div>
+                <div style="background:#e8115b;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Pop<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">🎵</div></div>
+                <div style="background:#148a08;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Hip-Hop<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">🎤</div></div>
+                <div style="background:#e91429;border-radius:8px;padding:.8rem;font-weight:700;font-size:.82rem;aspect-ratio:1;position:relative;overflow:hidden;">Rock<div style="position:absolute;bottom:-4px;right:-8px;transform:rotate(25deg);font-size:2rem;">🎸</div></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="card-body">
-        <h3>Key Design Features — Search &amp; Genre Browsing</h3>
+        <h3>Key Design Features</h3>
         <div class="annotation-container">
-          <div class="annotation">
-            <strong><span class="num-circle">5</span> Search Bar — "Record Store Clerk"</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            <span class="tag tag-affordance">Affordance</span>
-            The rounded search bar with magnifying glass icon and placeholder text ("What do you want to listen to?") acts as a <em>digital concierge</em> — a metaphor for asking a record-store clerk for recommendations. The pill shape and icon provide a clear <em>signifier</em> that text input is expected.
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">6</span> Genre Cards — "Browsing Aisles"</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            Colorful genre cards simulate <em>browsing aisles in a music store</em>, where each section has a distinct color/label. The bold colors and tilted imagery create visual differentiation similar to colored dividers in a physical record bin.
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">7</span> "Made For You" Section</strong>
-            <span class="tag tag-metaphor">Metaphor</span>
-            <span class="tag tag-critique">Critique</span>
-            "Made For You" is a <em>personal tailor</em> metaphor — the algorithm "stitches together" a custom experience. However, this can feel opaque; users cannot see <em>why</em> certain songs are recommended, breaking the metaphor of a transparent, trust-based human recommendation.
-          </div>
-          <div class="annotation">
-            <strong><span class="num-circle">8</span> Card Hover / Tap Affordance</strong>
-            <span class="tag tag-affordance">Affordance</span>
-            Each genre card scales slightly and shows a subtle shadow on hover — an affordance that communicates interactivity. On mobile, the card's size and spacing are designed for comfortable <em>thumb-tap targets</em>, following Fitts's Law.
-          </div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">5</span> Search Bar</strong><span class="tag tag-metaphor">Metaphor</span><span class="tag tag-affordance">Affordance</span>Acts as a <em>digital concierge</em> — asking a record-store clerk for help. Pill shape + magnifying glass icon clearly signify text input.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">6</span> Genre Cards</strong><span class="tag tag-metaphor">Metaphor</span>Simulates <em>browsing aisles in a music store</em>. Bold colors create differentiation like colored dividers in a physical record bin.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">7</span> "Made For You"</strong><span class="tag tag-metaphor">Metaphor</span><span class="tag tag-critique">Critique</span>A "personal tailor" metaphor — but opaque. Users can't see <em>why</em> songs are recommended, breaking the trust-based recommendation metaphor.</div>
+          <div class="annotation a-green"><strong><span class="nc nc-green">8</span> Card Hover</strong><span class="tag tag-affordance">Affordance</span>Cards scale on hover — communicating interactivity. Mobile spacing follows Fitts's Law for comfortable thumb-tap targets.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== DEEP ANALYSIS ===== -->
+  <!-- Deep Analysis Tables -->
   <section>
-    <h2>Deep Analysis: Metaphors in Spotify</h2>
+    <h2 class="border-green">Metaphor Analysis</h2>
     <table>
-      <thead>
-        <tr><th>UI Element</th><th>Real-World Metaphor</th><th>Effect on User</th></tr>
-      </thead>
+      <thead><tr><th>UI Element</th><th>Real-World Metaphor</th><th>Effect on User</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Library / Shelf</strong></td>
-          <td>Physical bookshelf of music — vinyl collections, CD racks</td>
-          <td>Creates a sense of <em>ownership</em> and personal space within a streaming service where you technically own nothing</td>
-        </tr>
-        <tr>
-          <td><strong>Playlist</strong></td>
-          <td>Mixtape / custom CD compilation</td>
-          <td>Empowers users to curate and share, echoing the deeply personal act of making a mixtape for someone</td>
-        </tr>
-        <tr>
-          <td><strong>Radio</strong></td>
-          <td>FM/AM radio broadcast</td>
-          <td>Implies effortless, lean-back listening without decision fatigue — "just tune in"</td>
-        </tr>
-        <tr>
-          <td><strong>Queue</strong></td>
-          <td>Jukebox queue / "up next" list</td>
-          <td>Gives users control over sequencing, like lining up songs on a jukebox</td>
-        </tr>
-        <tr>
-          <td><strong>Album Cover Art</strong></td>
-          <td>Physical album cover / poster</td>
-          <td>Provides visual identity, nostalgia, and artist branding — critical for emotional connection</td>
-        </tr>
-        <tr>
-          <td><strong>Heart / Like</strong></td>
-          <td>Putting a gold star or sticker on a favorite record</td>
-          <td>A quick, emotional gesture of approval that also trains the recommendation engine</td>
-        </tr>
-        <tr>
-          <td><strong>Shuffle</strong></td>
-          <td>Shuffling a deck of cards / randomizing order</td>
-          <td>Introduces serendipity, breaking the fixed-order convention of traditional albums</td>
-        </tr>
+        <tr><td><strong>Library / Shelf</strong></td><td>Vinyl collection, CD rack</td><td>Sense of <em>ownership</em> in a streaming context</td></tr>
+        <tr><td><strong>Playlist</strong></td><td>Mixtape / custom compilation</td><td>Personal curation; echoes making a mixtape</td></tr>
+        <tr><td><strong>Radio</strong></td><td>FM/AM radio broadcast</td><td>Lean-back, decision-free listening</td></tr>
+        <tr><td><strong>Queue</strong></td><td>Jukebox queue</td><td>Control over sequencing</td></tr>
+        <tr><td><strong>Heart / Like</strong></td><td>Gold star on a favorite record</td><td>Quick emotional gesture of approval</td></tr>
+        <tr><td><strong>Shuffle</strong></td><td>Shuffling a deck of cards</td><td>Introduces serendipity</td></tr>
       </tbody>
     </table>
   </section>
 
   <section>
-    <h2>Deep Analysis: Affordances in Spotify</h2>
+    <h2 class="border-green">Affordance Analysis</h2>
     <table>
-      <thead>
-        <tr><th>UI Element</th><th>Affordance Type</th><th>Design Details</th></tr>
-      </thead>
+      <thead><tr><th>UI Element</th><th>Type</th><th>Details</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Play Button (▶)</strong></td>
-          <td>Perceived / Explicit</td>
-          <td>High-contrast green circle with universal symbol. Appears on hover over album art too — a <em>hidden affordance</em> that reveals on interaction.</td>
-        </tr>
-        <tr>
-          <td><strong>Progress Bar</strong></td>
-          <td>Physical / Draggable</td>
-          <td>Thin bar with a scrub handle that appears on hover. Mimics a physical slider — users intuitively know to click and drag. The filled portion (green) provides <em>feedback</em> of elapsed time.</td>
-        </tr>
-        <tr>
-          <td><strong>Volume Slider</strong></td>
-          <td>Perceived / Draggable</td>
-          <td>Mirrors a physical mixing-board fader. The speaker icon changes (muted ↔ loud) as feedback, reinforcing the <em>mapping</em> between position and loudness.</td>
-        </tr>
-        <tr>
-          <td><strong>Hover-Reveal Play on Cards</strong></td>
-          <td>Hidden Affordance</td>
-          <td>A green play button appears over album/playlist cards only on hover. This keeps the UI clean but may reduce <em>discoverability</em> for new users — a trade-off between aesthetics and learnability.</td>
-        </tr>
-        <tr>
-          <td><strong>Drag-to-Reorder (Playlists)</strong></td>
-          <td>Physical / Gestural</td>
-          <td>Users can drag tracks to reorder within playlists. The grab cursor and row displacement provide clear signifiers. Maps to the physical act of rearranging CDs on a shelf.</td>
-        </tr>
-        <tr>
-          <td><strong>Right-Click Context Menu</strong></td>
-          <td>Hidden Affordance</td>
-          <td>Right-clicking reveals options (Add to Playlist, Share, Go to Artist). This follows OS conventions but is completely invisible — users must already know the pattern.</td>
-        </tr>
+        <tr><td><strong>Play Button</strong></td><td>Perceived / Explicit</td><td>Green circle + universal ▶ symbol; appears on hover over album art (hidden affordance)</td></tr>
+        <tr><td><strong>Progress Bar</strong></td><td>Physical / Draggable</td><td>Scrub handle appears on hover; filled portion provides elapsed time feedback</td></tr>
+        <tr><td><strong>Volume Slider</strong></td><td>Perceived / Draggable</td><td>Mimics mixing-board fader; speaker icon changes as feedback</td></tr>
+        <tr><td><strong>Drag-to-Reorder</strong></td><td>Physical / Gestural</td><td>Grab cursor + row displacement; maps to rearranging CDs on a shelf</td></tr>
+        <tr><td><strong>Context Menu</strong></td><td>Hidden Affordance</td><td>Right-click reveals options — follows OS conventions but invisible to new users</td></tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ===== CRITIQUE ===== -->
   <section>
-    <h2>Critique &amp; Observations</h2>
+    <h2 class="border-green">Critique</h2>
     <div class="card">
       <div class="card-body">
         <h3>Strengths</h3>
         <ul>
-          <li><strong>Consistent metaphor language:</strong> Spotify maintains a cohesive "personal music collection" metaphor throughout — Library, Playlists, Albums, Artists — giving users a familiar mental model even in a streaming context.</li>
-          <li><strong>Progressive disclosure:</strong> Affordances are layered — primary actions (play) are always visible, secondary actions (add to playlist, share) are revealed on hover or right-click, preventing cognitive overload.</li>
-          <li><strong>Cross-platform consistency:</strong> The green play button, dark theme, and transport controls remain consistent across desktop, mobile, and web, reinforcing learned affordances.</li>
-          <li><strong>Physical-to-digital mapping:</strong> The transport controls (⏮ ▶ ⏭) perfectly map Don Norman's concept of <em>natural mapping</em> — left means backward, right means forward, matching reading direction.</li>
+          <li><strong>Consistent metaphor language:</strong> "Personal music collection" model throughout (Library, Playlists, Albums)</li>
+          <li><strong>Progressive disclosure:</strong> Primary actions always visible; secondary actions on hover/right-click</li>
+          <li><strong>Natural mapping:</strong> Transport controls follow left-right directionality (⏮ ▶ ⏭)</li>
         </ul>
       </div>
     </div>
-    <div class="card" style="margin-top:1.2rem;">
+    <div class="card" style="margin-top:1rem;">
       <div class="card-body">
-        <h3>Weaknesses &amp; Critique</h3>
+        <h3>Weaknesses</h3>
         <ul>
-          <li><strong>Over-reliance on hidden affordances:</strong> Many powerful features (lyrics, queue, collaborative playlists) are buried behind icons with no labels. New users may never discover them without external guidance — violating the principle of <em>discoverability</em>.</li>
-          <li><strong>"Shuffle" metaphor mismatch:</strong> The shuffle button on free-tier playlists <em>forces</em> shuffle mode, breaking the metaphor of user agency. Users expect shuffle to be optional, but Spotify uses it as a business constraint — a case where <em>dark pattern</em> undermines the affordance.</li>
-          <li><strong>Algorithmic opacity:</strong> "Made For You" and "Discover Weekly" are powerful but act as <em>black boxes</em>. The "personal DJ" metaphor falls apart because you cannot ask the DJ <em>why</em> they chose a song or request a different direction conversationally.</li>
-          <li><strong>Inconsistent affordance signals:</strong> Some elements (e.g., artist names in the playbar) are clickable links, but they appear identical to plain text — a <em>false affordance</em> where the visual does not match the interactive potential.</li>
-          <li><strong>Mobile gesture conflicts:</strong> On mobile, swipe gestures on tracks (delete, add to queue) sometimes conflict with OS-level gestures (back navigation), creating <em>affordance ambiguity</em>.</li>
+          <li><strong>Hidden affordances:</strong> Lyrics, queue, collaborative playlists buried behind unlabeled icons — poor <em>discoverability</em></li>
+          <li><strong>Forced shuffle (free tier):</strong> Dark pattern that breaks user agency metaphor</li>
+          <li><strong>Algorithmic opacity:</strong> "Made For You" is a black box — can't ask the DJ <em>why</em></li>
+          <li><strong>Inconsistent clickability:</strong> Some text elements (artist names in playbar) are links but look like plain text</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- ===== CONCEPTS ===== -->
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== ACTIVITY 2: PATTERN LANGUAGE — AIRBNB =============== -->
+<!-- ============================================================ -->
+
+<div id="activity2" class="activity-divider" style="border-color: var(--coral);">
+  <h2 style="color:var(--coral);">Activity 2: Pattern Language Deconstruction</h2>
+  <p>App: <a class="app-link" href="https://www.airbnb.com" target="_blank" rel="noopener" style="color:var(--coral);">Airbnb — airbnb.com</a></p>
+</div>
+
+<div class="container">
+
   <section>
-    <h2>Key Concepts Applied</h2>
+    <h2 class="border-coral">Why Airbnb?</h2>
+    <p>Airbnb's design system is a masterclass in <strong>pattern language</strong> — a coherent vocabulary of reusable design patterns that work together to create a unified user experience. From search to booking, every interaction follows established patterns that users can learn once and apply everywhere.</p>
+  </section>
+
+  <!-- Screenshot 1: Search & Listing -->
+  <section>
+    <h2 class="border-coral">Annotated Screenshot 1 — Search &amp; Listings</h2>
+    <div class="card">
+      <div>
+        <div class="airbnb-mockup">
+          <div class="airbnb-header">
+            <div class="airbnb-logo">⌂ airbnb</div>
+            <div class="airbnb-search">
+              <div class="seg"><strong>Where</strong><span>Tokyo, Japan</span></div>
+              <div class="seg"><strong>Check in</strong><span>Mar 20</span></div>
+              <div class="seg"><strong>Check out</strong><span>Mar 25</span></div>
+              <div class="seg"><strong>Who</strong><span>2 guests</span></div>
+              <div class="search-btn">🔍</div>
+            </div>
+            <div class="airbnb-nav-user">
+              <span>Become a Host</span>
+              <span>🌐</span>
+              <span style="border:1px solid #ddd;border-radius:20px;padding:3px 8px;">☰ 👤</span>
+            </div>
+          </div>
+          <div class="airbnb-filters">
+            <div class="chip">🏠 Amazing views</div>
+            <div class="chip">🏖️ Beachfront</div>
+            <div class="chip">🏔️ Cabins</div>
+            <div class="chip">✨ Trending</div>
+            <div class="chip">🏢 Design</div>
+            <div class="chip">☀️ Tropical</div>
+            <div class="chip" style="border:2px solid #222;font-weight:600;">⊞ Filters</div>
+          </div>
+          <div class="airbnb-grid">
+            <div class="listing-card">
+              <div class="listing-img" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+                <div class="heart">♡</div>
+                <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="listing-info"><div class="loc">Shibuya, Tokyo</div><div class="dist">Modern loft · 2 beds</div><div class="rating">★ 4.92 (128)</div><div class="price">$142 <span style="font-weight:400;color:#717171;">night</span></div></div>
+            </div>
+            <div class="listing-card">
+              <div class="listing-img" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
+                <div class="heart">♡</div>
+                <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="listing-info"><div class="loc">Shinjuku, Tokyo</div><div class="dist">Entire apartment · 1 bed</div><div class="rating">★ 4.87 (95)</div><div class="price">$98 <span style="font-weight:400;color:#717171;">night</span></div></div>
+            </div>
+            <div class="listing-card">
+              <div class="listing-img" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">
+                <div class="heart">♡</div>
+                <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="listing-info"><div class="loc">Asakusa, Tokyo</div><div class="dist">Traditional house · 3 beds</div><div class="rating">★ 4.95 (203)</div><div class="price">$175 <span style="font-weight:400;color:#717171;">night</span></div></div>
+            </div>
+            <div class="listing-card">
+              <div class="listing-img" style="background:linear-gradient(135deg,#43e97b,#38f9d7);">
+                <div class="heart">♡</div>
+                <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+              </div>
+              <div class="listing-info"><div class="loc">Roppongi, Tokyo</div><div class="dist">Studio · 1 bed</div><div class="rating">★ 4.78 (67)</div><div class="price">$85 <span style="font-weight:400;color:#717171;">night</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Pattern Language Analysis — Search &amp; Browse</h3>
+        <div class="annotation-container">
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">1</span> Segmented Search Bar Pattern</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            The multi-field search bar (Where / Check in / Check out / Who) is a <em>structured input pattern</em> — breaking a complex query into discrete, familiar segments. This reduces cognitive load compared to a single free-text field. Each segment is a "micro-form" with its own input type (location picker, date picker, stepper).
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">2</span> Category Carousel / Filter Chips</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            Horizontal scrollable category chips (Amazing views, Beachfront, Cabins) follow the <em>faceted navigation pattern</em>. Icons + labels create a visual vocabulary that lets users scan quickly. The pattern reduces the paradox of choice by pre-curating categories.
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">3</span> Card Pattern — Listing Cards</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            <span class="tag tag-critique">Critique</span>
+            Each listing follows a strict <em>card pattern</em>: Image carousel → Location → Type → Rating → Price. This consistent hierarchy creates a scannable, predictable layout. The image carousel dots indicate multiple photos, encouraging exploration. <strong>Critique:</strong> The heart (save) icon has low contrast against varying image backgrounds.
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">4</span> Social Proof Pattern — Ratings</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            Star ratings + review counts (★ 4.92 (128)) follow the <em>social proof pattern</em>. Placing ratings directly on cards builds trust before clicking. The high-precision decimal (4.92 vs 5/5) signals authenticity over perfection.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshot 2: Booking Flow -->
+  <section>
+    <h2 class="border-coral">Annotated Screenshot 2 — Listing Detail &amp; Booking</h2>
+    <div class="card">
+      <div>
+        <div class="airbnb-mockup">
+          <div class="airbnb-header">
+            <div class="airbnb-logo">⌂ airbnb</div>
+            <div class="airbnb-nav-user"><span>Become a Host</span><span>🌐</span><span style="border:1px solid #ddd;border-radius:20px;padding:3px 8px;">☰ 👤</span></div>
+          </div>
+          <div style="padding:1.2rem 1.4rem;">
+            <h2 style="font-size:1.2rem;font-weight:600;margin-bottom:.2rem;">Stunning Traditional House in Asakusa</h2>
+            <div style="font-size:.8rem;color:#717171;margin-bottom:.8rem;">★ 4.95 · 203 reviews · 🏅 Superhost · Asakusa, Tokyo, Japan</div>
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:.4rem;border-radius:12px;overflow:hidden;margin-bottom:1rem;">
+              <div style="background:linear-gradient(135deg,#4facfe,#00f2fe);aspect-ratio:4/3;grid-row:span 2;"></div>
+              <div style="background:linear-gradient(135deg,#667eea,#764ba2);"></div>
+              <div style="background:linear-gradient(135deg,#f093fb,#f5576c);"></div>
+              <div style="background:linear-gradient(135deg,#43e97b,#38f9d7);"></div>
+              <div style="background:linear-gradient(135deg,#fa709a,#fee140);"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;">
+              <div>
+                <div style="display:flex;align-items:center;gap:.6rem;padding-bottom:.8rem;border-bottom:1px solid #eee;margin-bottom:.8rem;">
+                  <div style="width:40px;height:40px;background:#e0e0e0;border-radius:50%;"></div>
+                  <div><div style="font-weight:600;font-size:.85rem;">Hosted by Yuki</div><div style="font-size:.72rem;color:#717171;">Superhost · 5 years hosting</div></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:.8rem;">
+                  <div style="display:flex;gap:.5rem;font-size:.8rem;"><span style="width:20px;">🏠</span><div><strong>Entire home</strong><br><span style="color:#717171;font-size:.72rem;">You'll have the whole space</span></div></div>
+                  <div style="display:flex;gap:.5rem;font-size:.8rem;"><span style="width:20px;">✨</span><div><strong>Enhanced Clean</strong><br><span style="color:#717171;font-size:.72rem;">5-step enhanced cleaning process</span></div></div>
+                  <div style="display:flex;gap:.5rem;font-size:.8rem;"><span style="width:20px;">📍</span><div><strong>Great location</strong><br><span style="color:#717171;font-size:.72rem;">95% of recent guests gave 5-star rating</span></div></div>
+                </div>
+              </div>
+              <div style="border:1px solid #ddd;border-radius:12px;padding:1rem;box-shadow:0 2px 8px rgba(0,0,0,.08);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+                  <span style="font-size:1rem;font-weight:600;">$175 <span style="font-weight:400;font-size:.8rem;color:#717171;">night</span></span>
+                  <span style="font-size:.75rem;">★ 4.95 · 203 reviews</span>
+                </div>
+                <div style="border:1px solid #bbb;border-radius:8px;overflow:hidden;margin-bottom:.6rem;">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #bbb;">
+                    <div style="padding:.4rem .6rem;border-right:1px solid #bbb;"><div style="font-size:.6rem;font-weight:700;text-transform:uppercase;">Check-in</div><div style="font-size:.78rem;">3/20/2026</div></div>
+                    <div style="padding:.4rem .6rem;"><div style="font-size:.6rem;font-weight:700;text-transform:uppercase;">Checkout</div><div style="font-size:.78rem;">3/25/2026</div></div>
+                  </div>
+                  <div style="padding:.4rem .6rem;"><div style="font-size:.6rem;font-weight:700;text-transform:uppercase;">Guests</div><div style="font-size:.78rem;">2 guests</div></div>
+                </div>
+                <div style="background:#ff385c;color:#fff;text-align:center;padding:.6rem;border-radius:8px;font-weight:600;font-size:.85rem;margin-bottom:.5rem;">Reserve</div>
+                <div style="text-align:center;font-size:.72rem;color:#717171;">You won't be charged yet</div>
+                <div style="margin-top:.5rem;font-size:.78rem;">
+                  <div style="display:flex;justify-content:space-between;padding:.15rem 0;"><span>$175 x 5 nights</span><span>$875</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:.15rem 0;"><span>Cleaning fee</span><span>$60</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:.15rem 0;"><span>Service fee</span><span>$132</span></div>
+                  <div style="display:flex;justify-content:space-between;padding:.2rem 0;border-top:1px solid #ddd;margin-top:.3rem;font-weight:600;"><span>Total</span><span>$1,067</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Pattern Language Analysis — Listing Detail &amp; Booking</h3>
+        <div class="annotation-container">
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">5</span> Image Gallery Pattern</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            The 5-photo mosaic grid (1 large + 4 small) follows the <em>progressive disclosure pattern</em> — shows enough to entice while implying more content. The asymmetric layout draws the eye to the hero image first, then secondary views.
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">6</span> Trust Indicator Pattern</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            Host profile (avatar + name + "Superhost" badge + years hosting) follows the <em>credential pattern</em>. Stacking multiple trust signals (badge, tenure, guest rating) creates compound credibility without any single signal feeling like marketing.
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">7</span> Sticky Booking Card Pattern</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            <span class="tag tag-critique">Critique</span>
+            The right-side booking panel is a <em>persistent call-to-action pattern</em>. Price + dates + CTA button + price breakdown are contained in a card that stays visible while scrolling. The "You won't be charged yet" text is a <em>reassurance pattern</em> that reduces commitment anxiety. <strong>Critique:</strong> Fee structure (cleaning + service fee) can feel like a <em>drip pricing anti-pattern</em>.
+          </div>
+          <div class="annotation a-coral">
+            <strong><span class="nc nc-coral">8</span> Feature List Pattern</strong>
+            <span class="tag tag-pattern">Pattern</span>
+            Icon + title + description rows (Entire home, Enhanced Clean, Great location) follow the <em>benefit list pattern</em>. Each row addresses a different user concern (privacy, cleanliness, location quality), systematically reducing decision friction.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pattern Language Table -->
+  <section>
+    <h2 class="border-coral">Pattern Language Vocabulary</h2>
     <table>
-      <thead>
-        <tr><th>Concept (Norman, 1988)</th><th>How Spotify Applies It</th></tr>
-      </thead>
+      <thead><tr><th>Pattern</th><th>Where Used</th><th>Purpose</th></tr></thead>
       <tbody>
-        <tr><td><strong>Affordance</strong></td><td>Play buttons, sliders, clickable cards all signal their function through shape, color, and feedback</td></tr>
-        <tr><td><strong>Signifier</strong></td><td>Icons (🔍 ❤️ ▶), cursor changes, hover states, and color cues guide user attention</td></tr>
-        <tr><td><strong>Mapping</strong></td><td>Transport controls follow natural left-right mapping; volume slider maps up = louder</td></tr>
-        <tr><td><strong>Feedback</strong></td><td>Progress bar animation, color changes on like/save, sound waveform visualization</td></tr>
-        <tr><td><strong>Conceptual Model</strong></td><td>"Personal music collection" — even though streaming, users feel they own their library</td></tr>
-        <tr><td><strong>Constraint</strong></td><td>Free-tier limitations (forced shuffle, ads) constrain actions to encourage upgrade — a business constraint layered on top of design</td></tr>
+        <tr><td><strong>Structured Search</strong></td><td>Global search bar</td><td>Breaks complex queries into digestible steps — reduces cognitive load</td></tr>
+        <tr><td><strong>Card Pattern</strong></td><td>Listings, experiences, reviews</td><td>Consistent container for heterogeneous content — enables scanning</td></tr>
+        <tr><td><strong>Faceted Navigation</strong></td><td>Category chips, filters</td><td>Pre-curated exploration paths — tames paradox of choice</td></tr>
+        <tr><td><strong>Social Proof</strong></td><td>Ratings, review counts, Superhost badge</td><td>Builds trust through peer validation</td></tr>
+        <tr><td><strong>Progressive Disclosure</strong></td><td>Image gallery, "Show more" links</td><td>Reveals detail on demand without overwhelming</td></tr>
+        <tr><td><strong>Persistent CTA</strong></td><td>Booking card (sticky sidebar)</td><td>Keeps conversion action accessible at all scroll positions</td></tr>
+        <tr><td><strong>Reassurance</strong></td><td>"You won't be charged yet", free cancellation</td><td>Reduces commitment anxiety at decision points</td></tr>
+        <tr><td><strong>Credential Stacking</strong></td><td>Host profile section</td><td>Compounds trust signals (badge + tenure + rating)</td></tr>
+        <tr><td><strong>Price Anchoring</strong></td><td>Per-night price on cards, total on detail</td><td>Shows affordable unit price first, defers total — can feel like drip pricing</td></tr>
+        <tr><td><strong>Map + List</strong></td><td>Search results page</td><td>Dual representation supports both spatial and list-based reasoning</td></tr>
       </tbody>
     </table>
   </section>
 
-  <!-- ===== CONCLUSION ===== -->
   <section>
-    <h2>Conclusion</h2>
+    <h2 class="border-coral">Critique</h2>
+    <div class="card">
+      <div class="card-body">
+        <h3>Strengths</h3>
+        <ul>
+          <li><strong>Coherent pattern vocabulary:</strong> Every screen speaks the same visual language — cards, type hierarchy, spacing, color usage are remarkably consistent</li>
+          <li><strong>Trust-centered design:</strong> Patterns are layered to progressively build trust — from ratings on cards, to host credentials, to "free cancellation" reassurance</li>
+          <li><strong>Cross-cultural accessibility:</strong> Icon + text pairs, clear pricing, and photo-forward design work across languages and cultures</li>
+          <li><strong>Scalable pattern system:</strong> The same card pattern works for homes, experiences, and restaurants — proving the language's extensibility</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem;">
+      <div class="card-body">
+        <h3>Weaknesses</h3>
+        <ul>
+          <li><strong>Drip pricing anti-pattern:</strong> Cleaning fees + service fees only visible after selecting dates creates cognitive dissonance — the "real" price is 20-30% higher than displayed</li>
+          <li><strong>Over-reliance on images:</strong> Properties with fewer or lower-quality photos are systematically disadvantaged, regardless of actual quality</li>
+          <li><strong>Review bias pattern:</strong> The high-precision rating system clusters around 4.7-5.0, making meaningful differentiation difficult — a <em>compression anti-pattern</em></li>
+          <li><strong>Filter overload:</strong> The category carousel + filters button creates two parallel navigation paths that can conflict — users may not realize filters are applied from the carousel</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- ===== ACTIVITY 3: PROTOTYPE DESIGN ======================== -->
+<!-- ============================================================ -->
+
+<div id="activity3" class="activity-divider" style="border-color: var(--blue);">
+  <h2 style="color:var(--blue);">Activity 3: Prototype Design</h2>
+  <p>Hi-Fi Prototype — Smart Home AIOT Dashboard (Mobile)</p>
+</div>
+
+<div class="container">
+
+  <section>
+    <h2 class="border-blue">Project Overview</h2>
     <p>
-      Spotify demonstrates a masterful use of <strong>metaphor</strong> to create familiarity in a digital-only product —
-      transforming the intangible act of streaming into something that feels like curating a personal music collection.
-      Its <strong>affordances</strong> are generally well-designed, leveraging universal symbols and physical-to-digital
-      mappings that reduce learning curves.
+      A <strong>Smart Home AIOT Dashboard</strong> mobile application that unifies control of IoT devices (lights, thermostat, security cameras, appliances) into a single, intuitive interface. The prototype includes a <strong>dashboard/homepage</strong> and <strong>3 main features</strong>: device control, scene automation, and environmental monitoring.
     </p>
-    <p>
-      However, the analysis reveals tension between <em>aesthetic minimalism</em> and <em>discoverability</em>.
-      Spotify's reliance on hidden affordances and algorithmic opacity, while visually clean, may alienate less
-      tech-savvy users. The forced-shuffle dark pattern on free tier also demonstrates how business goals can
-      subvert good affordance design.
-    </p>
-    <p>
-      Overall, Spotify is a strong example of how thoughtful metaphor and affordance design can make a complex
-      digital product feel intuitive — while also illustrating the compromises that arise when design serves both
-      usability and revenue.
-    </p>
+    <p><strong>Target device:</strong> Phone (Mobile) &nbsp;|&nbsp; <strong>Design approach:</strong> Low-fi sketches → Hi-fi prototype</p>
+  </section>
+
+  <!-- Low-fi sketches -->
+  <section>
+    <h2 class="border-blue">Low-Fi Paper Prototype Sketches</h2>
+    <div class="card">
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+          <!-- Sketch 1 -->
+          <div style="background:#f5f0e8;border-radius:8px;padding:1rem;color:#333;font-family:'Courier New',monospace;font-size:.7rem;">
+            <div style="text-align:center;font-weight:700;margin-bottom:.5rem;border-bottom:2px solid #333;padding-bottom:.3rem;">DASHBOARD (Home)</div>
+            <div style="border:1px dashed #999;padding:.3rem;margin-bottom:.3rem;">[Good morning, User] &nbsp; [avatar]</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-bottom:.3rem;">
+              <div style="border:1px dashed #999;padding:.3rem;text-align:center;">🌡️ 24°C</div>
+              <div style="border:1px dashed #999;padding:.3rem;text-align:center;">💧 58%</div>
+              <div style="border:1px dashed #999;padding:.3rem;text-align:center;">💡 4 ON</div>
+              <div style="border:1px dashed #999;padding:.3rem;text-align:center;">🔒 Locked</div>
+            </div>
+            <div style="font-weight:700;margin:.3rem 0;">My Devices:</div>
+            <div style="border:1px dashed #999;padding:.2rem;margin-bottom:.2rem;">💡 Living Room &nbsp; [ON/OFF]</div>
+            <div style="border:1px dashed #999;padding:.2rem;margin-bottom:.2rem;">🌡️ Thermostat &nbsp; [24°C ←→]</div>
+            <div style="border:1px dashed #999;padding:.2rem;margin-bottom:.2rem;">📹 Front Door &nbsp; [LIVE]</div>
+            <div style="border:1px solid #333;margin-top:.4rem;display:flex;justify-content:space-around;padding:.3rem;">
+              <span>[🏠]</span><span>[⚡]</span><span>[📊]</span><span>[⚙️]</span>
+            </div>
+          </div>
+          <!-- Sketch 2 -->
+          <div style="background:#f5f0e8;border-radius:8px;padding:1rem;color:#333;font-family:'Courier New',monospace;font-size:.7rem;">
+            <div style="text-align:center;font-weight:700;margin-bottom:.5rem;border-bottom:2px solid #333;padding-bottom:.3rem;">SCENES</div>
+            <div style="border:1px dashed #999;padding:.3rem;margin-bottom:.3rem;">[← Back] &nbsp; Scenes</div>
+            <div style="border:2px solid #333;padding:.4rem;margin-bottom:.3rem;border-radius:4px;background:#e8f0e8;">
+              🌅 Morning &nbsp; "Wake up routine"
+              <div style="font-size:.6rem;margin-top:.2rem;">Lights 80% → Coffee ON → Blinds Open</div>
+            </div>
+            <div style="border:2px solid #333;padding:.4rem;margin-bottom:.3rem;border-radius:4px;">
+              🎬 Movie Night
+              <div style="font-size:.6rem;margin-top:.2rem;">Lights 20% → TV ON → Blinds Close</div>
+            </div>
+            <div style="border:2px solid #333;padding:.4rem;margin-bottom:.3rem;border-radius:4px;">
+              🌙 Bedtime
+              <div style="font-size:.6rem;margin-top:.2rem;">All lights OFF → Lock doors → AC 22°C</div>
+            </div>
+            <div style="border:1px dashed #999;padding:.3rem;margin-top:.3rem;text-align:center;">[ + Create New Scene ]</div>
+          </div>
+          <!-- Sketch 3 -->
+          <div style="background:#f5f0e8;border-radius:8px;padding:1rem;color:#333;font-family:'Courier New',monospace;font-size:.7rem;">
+            <div style="text-align:center;font-weight:700;margin-bottom:.5rem;border-bottom:2px solid #333;padding-bottom:.3rem;">DEVICE CONTROL</div>
+            <div style="border:1px dashed #999;padding:.3rem;margin-bottom:.3rem;">[← Back] &nbsp; AC · Living Room</div>
+            <div style="text-align:center;margin:.5rem 0;">
+              <div style="width:80px;height:80px;border:3px solid #333;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;">24°C</div>
+            </div>
+            <div style="display:flex;justify-content:center;gap:.3rem;margin:.3rem 0;">
+              <div style="border:1px solid #333;padding:.2rem .4rem;">Cool</div>
+              <div style="border:2px solid #333;padding:.2rem .4rem;background:#ddd;">Auto</div>
+              <div style="border:1px solid #333;padding:.2rem .4rem;">Heat</div>
+              <div style="border:1px solid #333;padding:.2rem .4rem;">Fan</div>
+            </div>
+            <div style="margin-top:.4rem;">
+              <div style="font-size:.65rem;">Fan Speed: [====●=====]</div>
+              <div style="font-size:.65rem;margin-top:.2rem;">Humidity: [========●=]</div>
+            </div>
+            <div style="border:1px dashed #999;margin-top:.4rem;padding:.3rem;">
+              <div style="font-weight:700;font-size:.65rem;">Schedule:</div>
+              <div style="font-size:.6rem;">7:00 AM → 24°C</div>
+              <div style="font-size:.6rem;">10:00 PM → 22°C</div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top:1rem;color:var(--muted);font-size:.85rem;">Low-fidelity paper prototype sketches showing the core user flows: dashboard overview, scene management, and individual device control.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hi-fi Prototype -->
+  <section>
+    <h2 class="border-blue">Hi-Fi Prototype</h2>
+
+    <div class="proto-screens">
+      <!-- Screen 1: Dashboard -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="dash-header">
+              <div><div class="greeting">Good Morning</div><div class="time">Mon, Mar 16 · 8:42 AM</div></div>
+              <div style="width:32px;height:32px;background:linear-gradient(135deg,var(--blue),#667eea);border-radius:50%;"></div>
+            </div>
+            <div class="dash-status">
+              <div class="dash-stat"><div class="icon">🌡️</div><div class="val">24°C</div><div class="label">Temperature</div></div>
+              <div class="dash-stat"><div class="icon">💧</div><div class="val">58%</div><div class="label">Humidity</div></div>
+              <div class="dash-stat"><div class="icon">💡</div><div class="val">4 On</div><div class="label">Active Lights</div></div>
+              <div class="dash-stat"><div class="icon">🔒</div><div class="val">Secure</div><div class="label">All Locked</div></div>
+            </div>
+            <div class="dash-section-title">My Devices</div>
+            <div class="dash-devices">
+              <div class="dash-device"><div class="d-icon">💡</div><div class="d-info"><div class="d-name">Living Room Light</div><div class="d-state">Brightness 80%</div></div><div class="d-toggle on"></div></div>
+              <div class="dash-device"><div class="d-icon">❄️</div><div class="d-info"><div class="d-name">Air Conditioner</div><div class="d-state">Cooling · 24°C</div></div><div class="d-toggle on"></div></div>
+              <div class="dash-device"><div class="d-icon">📹</div><div class="d-info"><div class="d-name">Front Door Camera</div><div class="d-state">Recording · No motion</div></div><div class="d-toggle on"></div></div>
+              <div class="dash-device"><div class="d-icon">🔊</div><div class="d-info"><div class="d-name">Smart Speaker</div><div class="d-state">Idle</div></div><div class="d-toggle off"></div></div>
+              <div class="dash-device"><div class="d-icon">🪟</div><div class="d-info"><div class="d-name">Bedroom Blinds</div><div class="d-state">Open · 100%</div></div><div class="d-toggle on"></div></div>
+            </div>
+            <div class="dash-bottom-nav">
+              <div class="bnav active"><span class="bnav-icon">🏠</span>Home</div>
+              <div class="bnav"><span class="bnav-icon">⚡</span>Scenes</div>
+              <div class="bnav"><span class="bnav-icon">📊</span>Energy</div>
+              <div class="bnav"><span class="bnav-icon">⚙️</span>Settings</div>
+            </div>
+          </div>
+        </div>
+        <div class="proto-label">Dashboard / Homepage</div>
+      </div>
+
+      <!-- Screen 2: Scenes -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="scene-header"><span class="back">‹</span><span class="title">Scenes</span></div>
+            <div class="scene-cards">
+              <div class="scene-card" style="background:linear-gradient(135deg,#f6d365,#fda085);">
+                <div class="s-icon">🌅</div>
+                <div class="s-name">Good Morning</div>
+                <div class="s-desc">Lights 80% · Coffee ON · Blinds open</div>
+              </div>
+              <div class="scene-card" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">
+                <div class="s-icon">🎬</div>
+                <div class="s-name">Movie Night</div>
+                <div class="s-desc">Lights 20% · TV ON · Blinds close</div>
+              </div>
+              <div class="scene-card" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+                <div class="s-icon">🌙</div>
+                <div class="s-name">Bedtime</div>
+                <div class="s-desc">All lights OFF · Lock doors · AC 22°C</div>
+              </div>
+              <div class="scene-card" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">
+                <div class="s-icon">🏃</div>
+                <div class="s-name">Away from Home</div>
+                <div class="s-desc">Lock all · Camera ON · Lights random</div>
+              </div>
+            </div>
+            <div class="scene-active">
+              <div class="sa-title">Currently Active: Good Morning</div>
+              <div class="sa-row"><span class="sa-icon">💡</span><span class="sa-text">Living Room Light</span><span class="sa-val">80%</span></div>
+              <div class="sa-row"><span class="sa-icon">☕</span><span class="sa-text">Coffee Machine</span><span class="sa-val">Brewing</span></div>
+              <div class="sa-row"><span class="sa-icon">🪟</span><span class="sa-text">All Blinds</span><span class="sa-val">Open</span></div>
+              <div class="sa-row"><span class="sa-icon">🎵</span><span class="sa-text">Speaker</span><span class="sa-val">Morning Jazz</span></div>
+            </div>
+            <div style="padding:.8rem 1rem;">
+              <div style="background:var(--blue);color:#000;text-align:center;padding:.55rem;border-radius:10px;font-weight:700;font-size:.8rem;">+ Create New Scene</div>
+            </div>
+            <div class="dash-bottom-nav">
+              <div class="bnav"><span class="bnav-icon">🏠</span>Home</div>
+              <div class="bnav active"><span class="bnav-icon">⚡</span>Scenes</div>
+              <div class="bnav"><span class="bnav-icon">📊</span>Energy</div>
+              <div class="bnav"><span class="bnav-icon">⚙️</span>Settings</div>
+            </div>
+          </div>
+        </div>
+        <div class="proto-label">Feature 1: Scene Automation</div>
+      </div>
+
+      <!-- Screen 3: Device Control -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ctrl-header"><span class="back">‹</span><span class="title">Air Conditioner · Living Room</span></div>
+            <div class="ctrl-big-circle">
+              <div class="c-val">24°</div>
+              <div class="c-unit">Celsius</div>
+            </div>
+            <div style="text-align:center;color:#888;font-size:.7rem;margin-bottom:.3rem;">Drag circle to adjust temperature</div>
+            <div class="ctrl-modes">
+              <div class="ctrl-mode">Cool</div>
+              <div class="ctrl-mode active">Auto</div>
+              <div class="ctrl-mode">Heat</div>
+              <div class="ctrl-mode">Fan</div>
+              <div class="ctrl-mode">Dry</div>
+            </div>
+            <div class="ctrl-slider-section">
+              <div class="ctrl-slider-label">Fan Speed — Medium</div>
+              <div class="ctrl-slider"><div class="ctrl-slider-fill fill-blue" style="width:50%;"></div></div>
+              <div class="ctrl-slider-label">Target Humidity — 55%</div>
+              <div class="ctrl-slider"><div class="ctrl-slider-fill fill-yellow" style="width:55%;"></div></div>
+            </div>
+            <div class="ctrl-schedule">
+              <div class="cs-title">Schedule</div>
+              <div class="cs-row"><span>Wake up</span><span class="cs-time">7:00 AM → 24°C</span></div>
+              <div class="cs-row"><span>Daytime</span><span class="cs-time">9:00 AM → 26°C</span></div>
+              <div class="cs-row"><span>Evening</span><span class="cs-time">6:00 PM → 23°C</span></div>
+              <div class="cs-row"><span>Sleep</span><span class="cs-time">10:00 PM → 22°C</span></div>
+            </div>
+            <div class="dash-bottom-nav">
+              <div class="bnav"><span class="bnav-icon">🏠</span>Home</div>
+              <div class="bnav"><span class="bnav-icon">⚡</span>Scenes</div>
+              <div class="bnav"><span class="bnav-icon">📊</span>Energy</div>
+              <div class="bnav"><span class="bnav-icon">⚙️</span>Settings</div>
+            </div>
+          </div>
+        </div>
+        <div class="proto-label">Feature 2: Device Control</div>
+      </div>
+
+      <!-- Screen 4: Energy Monitoring -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ctrl-header"><span class="back">‹</span><span class="title">Energy Monitor</span></div>
+            <div style="padding:0 1rem;">
+              <div style="background:#1e1e1e;border-radius:14px;padding:1rem;margin-bottom:.6rem;text-align:center;">
+                <div style="color:#888;font-size:.7rem;">Today's Usage</div>
+                <div style="color:#fff;font-size:1.8rem;font-weight:800;">12.4 <span style="font-size:.8rem;font-weight:400;">kWh</span></div>
+                <div style="color:var(--blue);font-size:.7rem;">↓ 8% less than yesterday</div>
+                <!-- Simple bar chart -->
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;height:80px;margin-top:.6rem;">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:45px;"></div><span style="font-size:.55rem;color:#888;">Mon</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:55px;"></div><span style="font-size:.55rem;color:#888;">Tue</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:40px;"></div><span style="font-size:.55rem;color:#888;">Wed</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:60px;"></div><span style="font-size:.55rem;color:#888;">Thu</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:50px;"></div><span style="font-size:.55rem;color:#888;">Fri</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:#333;border-radius:3px;height:35px;"></div><span style="font-size:.55rem;color:#888;">Sat</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                    <div style="width:18px;background:var(--blue);border-radius:3px;height:42px;"></div><span style="font-size:.55rem;color:var(--blue);">Sun</span>
+                  </div>
+                </div>
+              </div>
+              <div style="color:#fff;font-size:.8rem;font-weight:700;margin-bottom:.4rem;">By Device</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;">
+                <div style="background:#1e1e1e;border-radius:8px;padding:.5rem .7rem;display:flex;align-items:center;gap:.5rem;">
+                  <span style="font-size:1rem;">❄️</span>
+                  <div style="flex:1;"><div style="color:#fff;font-size:.75rem;font-weight:600;">Air Conditioner</div><div style="font-size:.65rem;color:#888;">5.2 kWh · 42%</div></div>
+                  <div style="width:60px;height:4px;background:#333;border-radius:2px;"><div style="width:42%;height:100%;background:var(--coral);border-radius:2px;"></div></div>
+                </div>
+                <div style="background:#1e1e1e;border-radius:8px;padding:.5rem .7rem;display:flex;align-items:center;gap:.5rem;">
+                  <span style="font-size:1rem;">💡</span>
+                  <div style="flex:1;"><div style="color:#fff;font-size:.75rem;font-weight:600;">Lighting (All)</div><div style="font-size:.65rem;color:#888;">2.8 kWh · 23%</div></div>
+                  <div style="width:60px;height:4px;background:#333;border-radius:2px;"><div style="width:23%;height:100%;background:#feca57;border-radius:2px;"></div></div>
+                </div>
+                <div style="background:#1e1e1e;border-radius:8px;padding:.5rem .7rem;display:flex;align-items:center;gap:.5rem;">
+                  <span style="font-size:1rem;">☕</span>
+                  <div style="flex:1;"><div style="color:#fff;font-size:.75rem;font-weight:600;">Kitchen Appliances</div><div style="font-size:.65rem;color:#888;">1.9 kWh · 15%</div></div>
+                  <div style="width:60px;height:4px;background:#333;border-radius:2px;"><div style="width:15%;height:100%;background:var(--blue);border-radius:2px;"></div></div>
+                </div>
+                <div style="background:#1e1e1e;border-radius:8px;padding:.5rem .7rem;display:flex;align-items:center;gap:.5rem;">
+                  <span style="font-size:1rem;">📹</span>
+                  <div style="flex:1;"><div style="color:#fff;font-size:.75rem;font-weight:600;">Security System</div><div style="font-size:.65rem;color:#888;">1.1 kWh · 9%</div></div>
+                  <div style="width:60px;height:4px;background:#333;border-radius:2px;"><div style="width:9%;height:100%;background:var(--accent2);border-radius:2px;"></div></div>
+                </div>
+                <div style="background:#1e1e1e;border-radius:8px;padding:.5rem .7rem;display:flex;align-items:center;gap:.5rem;">
+                  <span style="font-size:1rem;">🔌</span>
+                  <div style="flex:1;"><div style="color:#fff;font-size:.75rem;font-weight:600;">Others</div><div style="font-size:.65rem;color:#888;">1.4 kWh · 11%</div></div>
+                  <div style="width:60px;height:4px;background:#333;border-radius:2px;"><div style="width:11%;height:100%;background:#888;border-radius:2px;"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="dash-bottom-nav">
+              <div class="bnav"><span class="bnav-icon">🏠</span>Home</div>
+              <div class="bnav"><span class="bnav-icon">⚡</span>Scenes</div>
+              <div class="bnav active"><span class="bnav-icon">📊</span>Energy</div>
+              <div class="bnav"><span class="bnav-icon">⚙️</span>Settings</div>
+            </div>
+          </div>
+        </div>
+        <div class="proto-label">Feature 3: Energy Monitoring</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design Decisions -->
+  <section>
+    <h2 class="border-blue">Design Decisions &amp; Rationale</h2>
+    <div class="card">
+      <div class="card-body">
+        <table>
+          <thead><tr><th>Decision</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dark theme</strong></td><td>Smart home apps are often used in low-light settings (bedtime, movie night). Dark UI reduces eye strain and feels premium.</td></tr>
+            <tr><td><strong>Toggle switches for devices</strong></td><td>Familiar physical metaphor — mimics real wall switches. Binary state (on/off) is immediately legible.</td></tr>
+            <tr><td><strong>Circular temperature control</strong></td><td>References physical thermostats (Nest). The circular form affords rotation and feels natural for adjusting continuous values.</td></tr>
+            <tr><td><strong>Scene cards with gradients</strong></td><td>Each scene has a distinct color/mood identity, making them scannable. Gradient backgrounds evoke the atmosphere of each scene (warm sunrise, cool night).</td></tr>
+            <tr><td><strong>Status grid on dashboard</strong></td><td>4-stat grid provides at-a-glance overview without scrolling — addresses the primary user need of "is everything okay?" in 1 second.</td></tr>
+            <tr><td><strong>Bottom tab navigation</strong></td><td>Thumb-friendly placement for one-handed phone use. 4 tabs keep navigation simple while covering all core functions.</td></tr>
+            <tr><td><strong>Energy breakdown by device</strong></td><td>Allows users to identify energy hogs and make informed decisions — turning data into actionable insight.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Peer Feedback -->
+  <section>
+    <h2 class="border-blue">Peer Feedback</h2>
+    <div class="card">
+      <div class="card-body">
+        <div class="annotation-container">
+          <div class="annotation a-blue">
+            <strong>Feedback 1: Scene Activation</strong>
+            <span class="tag tag-critique">Improvement</span>
+            "Consider adding a confirmation step before activating scenes — accidentally triggering 'Away from Home' could lock someone out." Added a confirmation dialog in the revised design.
+          </div>
+          <div class="annotation a-blue">
+            <strong>Feedback 2: Accessibility</strong>
+            <span class="tag tag-critique">Improvement</span>
+            "The toggle switches could benefit from text labels (ON/OFF) in addition to color, for color-blind users." Good point — consider adding accessible labels.
+          </div>
+          <div class="annotation a-blue">
+            <strong>Feedback 3: Quick Actions</strong>
+            <span class="tag tag-pattern">Strength</span>
+            "The dashboard status grid is very effective — you can see everything at a glance without digging into menus. Love the 1-second comprehension goal."
+          </div>
+          <div class="annotation a-blue">
+            <strong>Feedback 4: Energy Insights</strong>
+            <span class="tag tag-pattern">Strength</span>
+            "The energy monitoring by device is actionable — not just data display but helps you understand which device to optimize."
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
 </div>
 
 <footer>
-  CMAA5043 — Design Activity Week 7-1 &nbsp;|&nbsp; Metaphor &amp; Affordance Deconstruction &nbsp;|&nbsp; 2026
+  CMAA5043 — Week 7 Design Activities &nbsp;|&nbsp; Design Paradigm, Language Deconstruction &amp; Prototype Design &nbsp;|&nbsp; 2026
 </footer>
 
 </body>
